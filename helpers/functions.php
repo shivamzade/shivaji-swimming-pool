@@ -423,3 +423,19 @@ function log_activity($action, $table_name = null, $record_id = null, $old_value
         $user_agent
     ]);
 }
+
+/**
+ * Generate receipt number
+ * 
+ * @return string Generated receipt number
+ */
+function generate_receipt_number() {
+    // Call the stored procedure to generate receipt number
+    $query = "CALL sp_generate_receipt_number(@receipt)";
+    db_query($query);
+    
+    // Get the generated receipt number
+    $result = db_fetch_one("SELECT @receipt as receipt_number");
+    
+    return $result['receipt_number'] ?? 'RCP-' . date('Ymd') . '-0001';
+}
