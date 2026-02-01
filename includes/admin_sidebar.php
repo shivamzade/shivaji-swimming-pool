@@ -41,6 +41,19 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             </ul>
         </li>
         
+        <!-- Guests Management -->
+        <li>
+            <a href="javaScript:void();" class="waves-effect">
+                <i class="icon-user-follow"></i>
+                <span>Guests</span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="sidebar-submenu">
+                <li><a href="<?php echo ADMIN_URL; ?>/guests/index.php"><i class="fa fa-circle-o"></i> All Guests</a></li>
+                <li><a href="<?php echo ADMIN_URL; ?>/guests/add.php"><i class="fa fa-circle-o"></i> Add Guest</a></li>
+            </ul>
+        </li>
+        
         <!-- Attendance -->
         <li>
             <a href="javaScript:void();" class="waves-effect">
