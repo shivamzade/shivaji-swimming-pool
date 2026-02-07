@@ -36,32 +36,32 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $title; ?> - <?php echo POOL_NAME; ?></title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12pt; line-height: 1.4; color: #000; background: #fff; max-width: 210mm; margin: 0 auto; padding: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 11pt; line-height: 1.2; color: #000; background: #fff; max-width: 210mm; margin: 0; padding: 10mm; }
         .no-print { text-align: center; margin-bottom: 20px; padding: 10px; background: #f0f0f0; border: 1px solid #ccc; }
-        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 20px; }
-        .logo { font-size: 24pt; font-weight: bold; margin-bottom: 5px; }
+        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+        .logo { font-size: 20pt; font-weight: bold; margin-bottom: 3px; }
         .sub-header { font-size: 10pt; color: #555; }
-        .form-title { text-align: center; font-size: 16pt; font-weight: bold; margin: 20px 0; text-transform: uppercase; text-decoration: underline; }
+        .form-title { text-align: center; font-size: 14pt; font-weight: bold; margin: 15px 0; text-transform: uppercase; text-decoration: underline; }
         
         .box-container { display: flex; flex-wrap: wrap; margin-bottom: 10px; }
         .box { flex: 1; border: 1px solid #000; padding: 5px; min-height: 30px; display: flex; align-items: flex-end; }
         .box-label { font-weight: bold; font-size: 9pt; margin-bottom: 2px; display: block; width: 100%; border-bottom: 1px dotted #ccc; }
         .box-value { font-size: 12pt; width: 100%; white-space: nowrap; overflow: hidden; }
         
-        .row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .row { display: flex; gap: 8px; margin-bottom: 10px; }
         .col { flex: 1; }
         
-        .section-header { background: #eee; font-weight: bold; padding: 5px 10px; border: 1px solid #000; margin-top: 20px; margin-bottom: 10px; font-size: 11pt; }
+        .section-header { background: #eee; font-weight: bold; padding: 3px 8px; border: 1px solid #000; margin-top: 12px; margin-bottom: 8px; font-size: 10pt; }
         
-        .photo-box { width: 120px; height: 140px; border: 2px solid #000; display: flex; justify-content: center; align-items: center; text-align: center; margin: 0 auto; margin-right: 0; font-size: 9pt; color: #999; }
+        .photo-box { width: 100px; height: 120px; border: 2px solid #000; display: flex; justify-content: center; align-items: center; text-align: center; margin: 0 auto; margin-right: 0; font-size: 8pt; color: #999; }
         
         .checkbox-group { display: flex; gap: 15px; }
         .checkbox-item { display: flex; align-items: center; }
         .checkbox-box { width: 15px; height: 15px; border: 1px solid #000; margin-right: 5px; display: inline-block; }
         .checkbox-box.checked { background-color: #000; }
         
-        .footer { margin-top: 50px; display: flex; justify-content: space-between; page-break-inside: avoid; }
-        .signature-box { width: 200px; text-align: center; border-top: 1px solid #000; padding-top: 5px; }
+        .footer { margin-top: 30px; display: flex; justify-content: space-between; page-break-inside: avoid; }
+        .signature-box { width: 180px; text-align: center; border-top: 1px solid #000; padding-top: 3px; font-size: 9pt; }
         
         @media print {
             .no-print { display: none; }
@@ -72,8 +72,8 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
         .field-group { border: 1px solid #999; padding: 10px; margin-bottom: 10px; position: relative; }
         .field-legend { position: absolute; top: -10px; left: 10px; background: #fff; padding: 0 5px; font-size: 9pt; font-weight: bold; }
         
-        table.office-use { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        table.office-use td, table.office-use th { border: 1px solid #000; padding: 8px; text-align: left; }
+        table.office-use { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 9pt; }
+        table.office-use td, table.office-use th { border: 1px solid #000; padding: 5px; text-align: left; }
     </style>
 </head>
 <body>
@@ -84,12 +84,12 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
     </div>
 
     <div class="header">
-        <div class="logo"><?php echo POOL_NAME; ?></div>
+            <div class="logo"><?php echo POOL_NAME; ?></div>
         <div class="sub-header">
             <?php echo get_setting('pool_address', 'Swimming Pool Complex'); ?><br>
             Phone: <?php echo get_setting('pool_phone', 'N/A'); ?> | Email: <?php echo get_setting('pool_email', 'N/A'); ?>
         </div>
-    </div>
+        </div>
     
     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
         <div style="flex: 1;">
@@ -160,15 +160,13 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
             <div class="box-value"><?php echo pv($member['alternate_phone'] ?? '', $is_blank); ?></div>
              <?php if($is_blank) echo str_repeat('_', 25); ?>
         </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-12">
+        <div class="col">
             <div class="box-label">Email Address</div>
             <div class="box-value"><?php echo pv($member['email'] ?? '', $is_blank); ?></div>
              <?php if($is_blank) echo str_repeat('_', 50); ?>
         </div>
     </div>
+    
     
     <div class="row">
         <div class="col-12">
@@ -183,8 +181,7 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
             </div>
             
             <?php if($is_blank): ?>
-            <div style="height: 40px; border-bottom: 1px dotted #ccc; margin-top: 15px;"></div>
-            <div style="height: 40px; border-bottom: 1px dotted #ccc;"></div>
+            <div style="height: 30px; border-bottom: 1px dotted #ccc;"></div>
             <?php endif; ?>
         </div>
     </div>
@@ -195,7 +192,7 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
         <div class="col-12">
             <div class="box-label">Medical Conditions / Allergies (if any)</div>
             <div class="box-value"><?php echo pv($member['medical_conditions'] ?? '', $is_blank); ?></div>
-            <?php if($is_blank) echo '<div style="margin-top:20px; border-bottom:1px dotted #ccc;"></div>'; ?>
+            <?php if($is_blank) echo '<div style="margin-top:15px; border-bottom:1px dotted #ccc;"></div>'; ?>
         </div>
     </div>
     
@@ -217,25 +214,9 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
         </div>
     </div>
     
-    <div class="section-header">4. DECLARATION</div>
+   
     
-    <div style="font-size: 10pt; text-align: justify; margin-bottom: 30px;">
-        I hereby declare that the information provided above is true and correct. 
-        I am physically fit to undertake swimming activities and I do not suffer from any contagious diseases.
-        I agree to abide by all the rules and regulations of <strong><?php echo POOL_NAME; ?></strong>. 
-        I understand that the management is not responsible for any loss of personal belongings or injuries sustained within the premises due to negligence.
-    </div>
-    
-    <div class="footer">
-        <div class="signature-box">
-            Signature of Applicant
-        </div>
-        <div class="signature-box">
-            For <?php echo POOL_NAME; ?><br>(Authorized Signatory)
-        </div>
-    </div>
-    
-    <div class="section-header" style="background-color: #f9f9f9; margin-top: 40px;">For Office Use Only</div>
+    <div class="section-header" style="background-color: #f9f9f9; margin-top: 25px;">For Office Use Only</div>
     
     <table class="office-use">
         <tr>
@@ -244,6 +225,46 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
             <td width="40%"><strong>Validity:</strong><br><br>From: _______________ To: _______________</td>
         </tr>
     </table>
+
+     <div class="section-header"> Medical Certificate</div>
+    
+    <div style="font-size: 9pt; text-align: justify; margin-bottom: 20px;">
+        This is to certify that 
+        <?php echo (!$is_blank && !empty($member['first_name'])) ? clean($member['first_name']) : '__________'; ?> 
+        <?php echo (!$is_blank && !empty($member['last_name'])) ? clean($member['last_name']) : '__________'; ?> 
+        is physically fit to undertake swimming activities. He/She is also free from skin diseases and is not suffering from any infectious disease/infection.
+
+        <!-- I agree to abide by all the rules and regulations of <strong><?php echo POOL_NAME; ?></strong>. 
+        I understand that the management is not responsible for any loss of personal belongings or injuries sustained within the premises due to negligence. -->
+    </div>
+    
+    <div class="footer" style="justify-content: flex-end;">
+        
+       
+         <div class="signature-box" >
+            Authorized Medical Officer MBBS/MD Doctor <br>(Signature & Stamp)
+        </div>
+      
+    </div>
+
+     <div class="section-header"> Declaration</div>
+    
+    <div style="font-size: 9pt; text-align: justify; margin-bottom: 20px;">
+       
+        I hereby declare that all the information provided above is true and correct to the best of my knowledge and belief.
+        I have read and understood the rules and regulations of <?php echo POOL_NAME; ?> and agree to abide by them.
+    </div>
+    
+    <div class="footer">
+        
+        <div class="signature-box">
+            For <?php echo POOL_NAME; ?><br>(Authorized Signatory)
+        </div>
+        
+        <div class="signature-box">
+            Signature of Applicant
+        </div>
+    </div>
 
 </body>
 </html>

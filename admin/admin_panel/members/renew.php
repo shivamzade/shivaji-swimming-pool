@@ -36,9 +36,16 @@ $page_title = 'Membership Renewal: ' . $member['member_code'];
 if (is_post_request()) {
     require_csrf_token();
     
-    $plan_id = intval($_POST['plan_id'] ?? 0);
-    $payment_mode = sanitize_input($_POST['payment_mode'] ?? 'CASH');
-    $start_date = sanitize_input($_POST['start_date'] ?? date('Y-m-d'));
+    // Store form data for redisplay on error
+    $form_data = [
+        'plan_id' => intval($_POST['plan_id'] ?? 0),
+        'payment_mode' => sanitize_input($_POST['payment_mode'] ?? 'CASH'),
+        'start_date' => sanitize_input($_POST['start_date'] ?? date('Y-m-d'))
+    ];
+    
+    $plan_id = $form_data['plan_id'];
+    $payment_method = $form_data['payment_mode'];
+    $start_date = $form_data['start_date'];
     
     // Get plan details
     $plan = db_fetch_one("SELECT * FROM membership_plans WHERE plan_id = ?", 'i', [$plan_id]);
@@ -54,13 +61,13 @@ if (is_post_request()) {
         try {
             // 1. Create Payment Record
             $receipt_number = 'RCP-' . date('Ymd') . '-' . rand(1000, 9999);
-            $pay_query = "INSERT INTO payments (member_id, amount, payment_date, payment_mode, receipt_number, status, created_by)
-                          VALUES (?, ?, CURDATE(), ?, ?, 'SUCCESS', ?)";
+            $pay_query = "INSERT INTO payments (member_id, amount, payment_date, payment_method, receipt_number, payment_type, created_by)
+                          VALUES (?, ?, CURDATE(), ?, ?, 'RENEWAL', ?)";
             
             db_query($pay_query, 'idssi', [
                 $member_id,
                 $amount,
-                $payment_mode,
+                $payment_method,
                 $receipt_number,
                 get_user_id()
             ]);
@@ -81,6 +88,13 @@ if (is_post_request()) {
             set_flash('error', 'Operation failed: ' . $e->getMessage());
         }
     }
+} else {
+    // Initialize empty form data for GET requests
+    $form_data = [
+        'plan_id' => 0,
+        'payment_mode' => 'CASH',
+        'start_date' => ''
+    ];
 }
 
 // Include header
@@ -129,7 +143,7 @@ include_once '../../../includes/admin_topbar.php';
                                             <div class="col-md-6 mb-3">
                                                 <div class="card plan-card h-100 border p-2 cursor-pointer" onclick="document.getElementById('plan_<?php echo $plan['plan_id']; ?>').checked = true;">
                                                     <div class="custom-control custom-radio">
-                                                        <input type="radio" id="plan_<?php echo $plan['plan_id']; ?>" name="plan_id" class="custom-control-input" value="<?php echo $plan['plan_id']; ?>" required>
+                                                        <input type="radio" id="plan_<?php echo $plan['plan_id']; ?>" name="plan_id" class="custom-control-input" value="<?php echo $plan['plan_id']; ?>" <?php echo ($form_data['plan_id'] == $plan['plan_id']) ? 'checked' : ''; ?> required>
                                                         <label class="custom-control-label font-weight-bold" for="plan_<?php echo $plan['plan_id']; ?>">
                                                             <?php echo clean($plan['plan_name']); ?>
                                                         </label>
@@ -155,8 +169,10 @@ include_once '../../../includes/admin_topbar.php';
                                     if ($member['membership_end_date'] && strtotime($member['membership_end_date']) > time()) {
                                         $default_start = date('Y-m-d', strtotime($member['membership_end_date'] . ' + 1 day'));
                                     }
+                                    // Use form data if available, otherwise use default
+                                    $start_date_value = !empty($form_data['start_date']) ? $form_data['start_date'] : $default_start;
                                     ?>
-                                    <input type="date" name="start_date" class="form-control" value="<?php echo $default_start; ?>" required>
+                                    <input type="date" name="start_date" class="form-control" value="<?php echo $start_date_value; ?>" required>
                                     <small class="text-muted">Membership will automatically expire based on the selected plan's duration.</small>
                                 </div>
                             </div>
@@ -165,10 +181,10 @@ include_once '../../../includes/admin_topbar.php';
                                 <label class="col-sm-3 col-form-label">Payment Mode <span class="text-danger">*</span></label>
                                 <div class="col-sm-9">
                                     <select name="payment_mode" class="form-control" required>
-                                        <option value="CASH">Cash</option>
-                                        <option value="UPI">UPI / QR Code</option>
-                                        <option value="CARD">Credit / Debit Card</option>
-                                        <option value="BANK_TRANSFER">Bank Transfer</option>
+                                        <option value="CASH" <?php echo ($form_data['payment_mode'] == 'CASH') ? 'selected' : ''; ?>>Cash</option>
+                                        <option value="UPI" <?php echo ($form_data['payment_mode'] == 'UPI') ? 'selected' : ''; ?>>UPI / QR Code</option>
+                                        <option value="CARD" <?php echo ($form_data['payment_mode'] == 'CARD') ? 'selected' : ''; ?>>Credit / Debit Card</option>
+                                        <option value="BANK_TRANSFER" <?php echo ($form_data['payment_mode'] == 'BANK_TRANSFER') ? 'selected' : ''; ?>>Bank Transfer</option>
                                     </select>
                                 </div>
                             </div>

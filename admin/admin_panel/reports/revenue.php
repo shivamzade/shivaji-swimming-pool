@@ -45,7 +45,7 @@ $mode_breakdown = [
 
 foreach ($transactions as $t) {
     $total_revenue += $t['amount'];
-    $mode = $t['payment_mode'];
+    $mode = $t['payment_method'] ?? $t['payment_mode'] ?? 'UNKNOWN';
     if (isset($mode_breakdown[$mode])) {
         $mode_breakdown[$mode] += $t['amount'];
     }
@@ -155,7 +155,7 @@ include_once '../../../includes/admin_topbar.php';
                                                         <td><?php echo format_date($t['payment_date']); ?></td>
                                                         <td><small><?php echo clean($t['receipt_number']); ?></small></td>
                                                         <td><?php echo clean($t['first_name'] . ' ' . $t['last_name']); ?></td>
-                                                        <td><span class="badge badge-light"><?php echo clean($t['payment_mode']); ?></span></td>
+                                                        <td><span class="badge badge-light"><?php echo clean($t['payment_method'] ?? $t['payment_mode'] ?? 'N/A'); ?></span></td>
                                                         <td class="text-right"><strong><?php echo format_currency($t['amount']); ?></strong></td>
                                                     </tr>
                                                 <?php endforeach; ?>

@@ -274,7 +274,7 @@ include_once '../../../includes/admin_topbar.php';
                                                     <td><?php echo clean($pay['receipt_number']); ?></td>
                                                     <td><?php echo format_date($pay['payment_date']); ?></td>
                                                     <td><?php echo format_currency($pay['amount']); ?></td>
-                                                    <td><?php echo clean($pay['payment_mode']); ?></td>
+                                                    <td><?php echo clean($pay['payment_method'] ?? $pay['payment_mode'] ?? 'N/A'); ?></td>
                                                     <td><span class="badge badge-success"><?php echo clean($pay['status']); ?></span></td>
                                                 </tr>
                                                 <?php endforeach; ?>

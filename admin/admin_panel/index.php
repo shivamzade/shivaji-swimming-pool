@@ -29,8 +29,10 @@ $currently_inside_query = "SELECT COUNT(*) as total FROM attendance WHERE attend
 $currently_inside_result = db_fetch_one($currently_inside_query);
 $currently_inside = $currently_inside_result['total'] ?? 0;
 
-// Active members
-$active_members_query = "SELECT COUNT(*) as total FROM members WHERE status = 'ACTIVE'";
+// Active members (status = ACTIVE AND membership_end_date >= CURDATE())
+$active_members_query = "SELECT COUNT(*) as total FROM members 
+                        WHERE status = 'ACTIVE' 
+                        AND membership_end_date >= CURDATE()";
 $active_members_result = db_fetch_one($active_members_query);
 $active_members = $active_members_result['total'] ?? 0;
 
@@ -51,8 +53,10 @@ $expiring_soon_query = "SELECT COUNT(*) as total FROM members
 $expiring_soon_result = db_fetch_one($expiring_soon_query);
 $expiring_soon = $expiring_soon_result['total'] ?? 0;
 
-// Expired members (needs renewal)
-$expired_query = "SELECT COUNT(*) as total FROM members WHERE status = 'EXPIRED'";
+// Expired members (status = EXPIRED OR membership_end_date < CURDATE())
+$expired_query = "SELECT COUNT(*) as total FROM members 
+                 WHERE status = 'EXPIRED' 
+                 OR (status = 'ACTIVE' AND membership_end_date < CURDATE())";
 $expired_result = db_fetch_one($expired_query);
 $expired_members = $expired_result['total'] ?? 0;
 

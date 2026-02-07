@@ -17,6 +17,30 @@ $page_title = 'Add New Member';
 if (is_post_request()) {
     require_csrf_token();
     
+    // Store form data for redisplay on error
+    $form_data = [
+        'first_name' => sanitize_input($_POST['first_name'] ?? ''),
+        'last_name' => sanitize_input($_POST['last_name'] ?? ''),
+        'gender' => sanitize_input($_POST['gender'] ?? ''),
+        'date_of_birth' => sanitize_input($_POST['date_of_birth'] ?? ''),
+        'blood_group' => sanitize_input($_POST['blood_group'] ?? ''),
+        'medical_conditions' => sanitize_input($_POST['medical_conditions'] ?? ''),
+        'phone' => sanitize_input($_POST['phone'] ?? ''),
+        'alternate_phone' => sanitize_input($_POST['alternate_phone'] ?? ''),
+        'email' => sanitize_input($_POST['email'] ?? ''),
+        'address_line1' => sanitize_input($_POST['address_line1'] ?? ''),
+        'address_line2' => sanitize_input($_POST['address_line2'] ?? ''),
+        'city' => sanitize_input($_POST['city'] ?? ''),
+        'state' => sanitize_input($_POST['state'] ?? ''),
+        'pincode' => sanitize_input($_POST['pincode'] ?? ''),
+        'id_proof_type' => sanitize_input($_POST['id_proof_type'] ?? ''),
+        'id_proof_number' => sanitize_input($_POST['id_proof_number'] ?? ''),
+        'emergency_contact_name' => sanitize_input($_POST['emergency_contact_name'] ?? ''),
+        'emergency_contact_phone' => sanitize_input($_POST['emergency_contact_phone'] ?? ''),
+        'emergency_contact_relation' => sanitize_input($_POST['emergency_contact_relation'] ?? ''),
+        'remarks' => sanitize_input($_POST['remarks'] ?? '')
+    ];
+    
     $result = Member::create($_POST);
     
     if ($result['success']) {
@@ -25,6 +49,30 @@ if (is_post_request()) {
     } else {
         set_flash('error', $result['message']);
     }
+} else {
+    // Initialize empty form data for GET requests
+    $form_data = [
+        'first_name' => '',
+        'last_name' => '',
+        'gender' => '',
+        'date_of_birth' => '',
+        'blood_group' => '',
+        'medical_conditions' => '',
+        'phone' => '',
+        'alternate_phone' => '',
+        'email' => '',
+        'address_line1' => '',
+        'address_line2' => '',
+        'city' => '',
+        'state' => '',
+        'pincode' => '',
+        'id_proof_type' => '',
+        'id_proof_number' => '',
+        'emergency_contact_name' => '',
+        'emergency_contact_phone' => '',
+        'emergency_contact_relation' => '',
+        'remarks' => ''
+    ];
 }
 
 // Include header
@@ -59,13 +107,13 @@ include_once '../../../includes/admin_topbar.php';
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>First Name <span class="text-danger">*</span></label>
-                                        <input type="text" name="first_name" class="form-control" required>
+                                        <input type="text" name="first_name" class="form-control" value="<?php echo $form_data['first_name']; ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Last Name <span class="text-danger">*</span></label>
-                                        <input type="text" name="last_name" class="form-control" required>
+                                        <input type="text" name="last_name" class="form-control" value="<?php echo $form_data['last_name']; ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -73,9 +121,9 @@ include_once '../../../includes/admin_topbar.php';
                                         <label>Gender <span class="text-danger">*</span></label>
                                         <select name="gender" class="form-control" required>
                                             <option value="">Select Gender</option>
-                                            <option value="MALE">Male</option>
-                                            <option value="FEMALE">Female</option>
-                                            <option value="OTHER">Other</option>
+                                            <option value="MALE" <?php echo ($form_data['gender'] == 'MALE') ? 'selected' : ''; ?>>Male</option>
+                                            <option value="FEMALE" <?php echo ($form_data['gender'] == 'FEMALE') ? 'selected' : ''; ?>>Female</option>
+                                            <option value="OTHER" <?php echo ($form_data['gender'] == 'OTHER') ? 'selected' : ''; ?>>Other</option>
                                         </select>
                                     </div>
                                 </div>
@@ -86,6 +134,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Date of Birth <span class="text-danger">*</span></label>
                                         <input type="date" name="date_of_birth" class="form-control" 
+                                               value="<?php echo $form_data['date_of_birth']; ?>"
                                                max="<?php echo date('Y-m-d'); ?>" required>
                                     </div>
                                 </div>
@@ -94,14 +143,14 @@ include_once '../../../includes/admin_topbar.php';
                                         <label>Blood Group</label>
                                         <select name="blood_group" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="A+">A+</option>
-                                            <option value="A-">A-</option>
-                                            <option value="B+">B+</option>
-                                            <option value="B-">B-</option>
-                                            <option value="AB+">AB+</option>
-                                            <option value="AB-">AB-</option>
-                                            <option value="O+">O+</option>
-                                            <option value="O-">O-</option>
+                                            <option value="A+" <?php echo ($form_data['blood_group'] == 'A+') ? 'selected' : ''; ?>>A+</option>
+                                            <option value="A-" <?php echo ($form_data['blood_group'] == 'A-') ? 'selected' : ''; ?>>A-</option>
+                                            <option value="B+" <?php echo ($form_data['blood_group'] == 'B+') ? 'selected' : ''; ?>>B+</option>
+                                            <option value="B-" <?php echo ($form_data['blood_group'] == 'B-') ? 'selected' : ''; ?>>B-</option>
+                                            <option value="AB+" <?php echo ($form_data['blood_group'] == 'AB+') ? 'selected' : ''; ?>>AB+</option>
+                                            <option value="AB-" <?php echo ($form_data['blood_group'] == 'AB-') ? 'selected' : ''; ?>>AB-</option>
+                                            <option value="O+" <?php echo ($form_data['blood_group'] == 'O+') ? 'selected' : ''; ?>>O+</option>
+                                            <option value="O-" <?php echo ($form_data['blood_group'] == 'O-') ? 'selected' : ''; ?>>O-</option>
                                         </select>
                                     </div>
                                 </div>
@@ -109,6 +158,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Medical Conditions</label>
                                         <input type="text" name="medical_conditions" class="form-control" 
+                                               value="<?php echo $form_data['medical_conditions']; ?>"
                                                placeholder="Any medical conditions (optional)">
                                     </div>
                                 </div>
@@ -121,6 +171,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Phone Number <span class="text-danger">*</span></label>
                                         <input type="tel" name="phone" class="form-control" 
+                                               value="<?php echo $form_data['phone']; ?>"
                                                pattern="[0-9]{10}" placeholder="10-digit mobile number" required>
                                         <small class="form-text text-muted">Enter 10-digit number</small>
                                     </div>
@@ -129,6 +180,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Alternate Phone</label>
                                         <input type="tel" name="alternate_phone" class="form-control" 
+                                               value="<?php echo $form_data['alternate_phone']; ?>"
                                                pattern="[0-9]{10}" placeholder="Optional">
                                     </div>
                                 </div>
@@ -136,6 +188,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Email</label>
                                         <input type="email" name="email" class="form-control" 
+                                               value="<?php echo $form_data['email']; ?>"
                                                placeholder="email@example.com (optional)">
                                     </div>
                                 </div>
@@ -147,13 +200,13 @@ include_once '../../../includes/admin_topbar.php';
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Address Line 1</label>
-                                        <input type="text" name="address_line1" class="form-control">
+                                        <input type="text" name="address_line1" class="form-control" value="<?php echo $form_data['address_line1']; ?>">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Address Line 2</label>
-                                        <input type="text" name="address_line2" class="form-control">
+                                        <input type="text" name="address_line2" class="form-control" value="<?php echo $form_data['address_line2']; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -162,19 +215,20 @@ include_once '../../../includes/admin_topbar.php';
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>City</label>
-                                        <input type="text" name="city" class="form-control">
+                                        <input type="text" name="city" class="form-control" value="<?php echo $form_data['city']; ?>">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>State</label>
-                                        <input type="text" name="state" class="form-control">
+                                        <input type="text" name="state" class="form-control" value="<?php echo $form_data['state']; ?>">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Pincode</label>
                                         <input type="text" name="pincode" class="form-control" 
+                                               value="<?php echo $form_data['pincode']; ?>"
                                                pattern="[0-9]{6}" placeholder="6-digit pincode">
                                     </div>
                                 </div>
@@ -188,18 +242,18 @@ include_once '../../../includes/admin_topbar.php';
                                         <label>ID Proof Type</label>
                                         <select name="id_proof_type" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="AADHAR">Aadhar Card</option>
-                                            <option value="PAN">PAN Card</option>
-                                            <option value="DRIVING_LICENSE">Driving License</option>
-                                            <option value="PASSPORT">Passport</option>
-                                            <option value="OTHER">Other</option>
+                                            <option value="AADHAR" <?php echo ($form_data['id_proof_type'] == 'AADHAR') ? 'selected' : ''; ?>>Aadhar Card</option>
+                                            <option value="PAN" <?php echo ($form_data['id_proof_type'] == 'PAN') ? 'selected' : ''; ?>>PAN Card</option>
+                                            <option value="DRIVING_LICENSE" <?php echo ($form_data['id_proof_type'] == 'DRIVING_LICENSE') ? 'selected' : ''; ?>>Driving License</option>
+                                            <option value="PASSPORT" <?php echo ($form_data['id_proof_type'] == 'PASSPORT') ? 'selected' : ''; ?>>Passport</option>
+                                            <option value="OTHER" <?php echo ($form_data['id_proof_type'] == 'OTHER') ? 'selected' : ''; ?>>Other</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>ID Proof Number</label>
-                                        <input type="text" name="id_proof_number" class="form-control">
+                                        <input type="text" name="id_proof_number" class="form-control" value="<?php echo $form_data['id_proof_number']; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -210,13 +264,14 @@ include_once '../../../includes/admin_topbar.php';
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Contact Name</label>
-                                        <input type="text" name="emergency_contact_name" class="form-control">
+                                        <input type="text" name="emergency_contact_name" class="form-control" value="<?php echo $form_data['emergency_contact_name']; ?>">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Contact Phone</label>
                                         <input type="tel" name="emergency_contact_phone" class="form-control" 
+                                               value="<?php echo $form_data['emergency_contact_phone']; ?>"
                                                pattern="[0-9]{10}">
                                     </div>
                                 </div>
@@ -224,6 +279,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Relation</label>
                                         <input type="text" name="emergency_contact_relation" class="form-control" 
+                                               value="<?php echo $form_data['emergency_contact_relation']; ?>"
                                                placeholder="e.g., Father, Mother, Spouse">
                                     </div>
                                 </div>
@@ -235,7 +291,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Remarks</label>
                                         <textarea name="remarks" class="form-control" rows="3" 
-                                                  placeholder="Any additional notes (optional)"></textarea>
+                                                  placeholder="Any additional notes (optional)"><?php echo $form_data['remarks']; ?></textarea>
                                     </div>
                                 </div>
                             </div>

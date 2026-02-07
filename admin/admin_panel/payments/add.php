@@ -17,8 +17,22 @@ $page_title = 'Add New Payment';
 if (is_post_request()) {
     require_csrf_token();
     
+    // Store form data for redisplay on error
+    $form_data = [
+        'payment_for_type' => sanitize_input($_POST['payment_for_type'] ?? ''),
+        'member_id' => intval($_POST['member_id'] ?? 0),
+        'guest_id' => intval($_POST['guest_id'] ?? 0),
+        'payment_type' => sanitize_input($_POST['payment_type'] ?? ''),
+        'amount' => floatval($_POST['amount'] ?? 0),
+        'payment_mode' => sanitize_input($_POST['payment_mode'] ?? ''),
+        'payment_date' => sanitize_input($_POST['payment_date'] ?? date('Y-m-d')),
+        'payment_for_month' => sanitize_input($_POST['payment_for_month'] ?? ''),
+        'transaction_id' => sanitize_input($_POST['transaction_id'] ?? ''),
+        'remarks' => sanitize_input($_POST['remarks'] ?? '')
+    ];
+    
     // Validate required fields
-    $payment_for_type = sanitize_input($_POST['payment_for_type']);
+    $payment_for_type = $form_data['payment_for_type'];
     
     if ($payment_for_type === 'MEMBER') {
         $required_fields = ['member_id', 'payment_type', 'amount', 'payment_mode', 'payment_date'];
@@ -29,59 +43,77 @@ if (is_post_request()) {
         redirect(ADMIN_URL . '/payments/add.php');
     }
     
+    $validation_error = false;
     foreach ($required_fields as $field) {
-        if (empty($_POST[$field])) {
+        if (empty($form_data[$field])) {
             set_flash('error', 'Please fill all required fields.');
-            redirect(ADMIN_URL . '/payments/add.php');
+            $validation_error = true;
+            break;
         }
     }
     
-    // Sanitize inputs
-    $member_id = $payment_for_type === 'MEMBER' ? intval($_POST['member_id']) : null;
-    $guest_id = $payment_for_type === 'GUEST' ? intval($_POST['guest_id']) : null;
-    $payment_type = sanitize_input($_POST['payment_type']);
-    $amount = floatval($_POST['amount']);
-    $payment_mode = sanitize_input($_POST['payment_mode']);
-    $payment_date = sanitize_input($_POST['payment_date']);
-    $payment_for_month = !empty($_POST['payment_for_month']) ? sanitize_input($_POST['payment_for_month']) : null;
-    $transaction_id = !empty($_POST['transaction_id']) ? sanitize_input($_POST['transaction_id']) : null;
-    $remarks = !empty($_POST['remarks']) ? sanitize_input($_POST['remarks']) : null;
-    
-    // Generate receipt number
-    $receipt_number = generate_receipt_number();
-    
-    // Get current user ID
-    $created_by = $_SESSION['user_id'] ?? 1;
-    
-    // Insert payment
-    $query = "INSERT INTO payments (member_id, guest_id, payment_type, payment_for_type, amount, payment_method, receipt_number, 
-              transaction_id, payment_date, payment_for_month, remarks, created_by) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
-    $params = [
-            $member_id, 
-            $guest_id, 
-            $payment_type, 
-            $payment_for_type, 
-            $amount, 
-            $payment_mode, 
-            $receipt_number, 
-            $transaction_id, 
-            $payment_date, 
-            $payment_for_month, 
-            $remarks, 
-            $created_by
-        ];
-    $types = "iisssssssssi";
-    
-    $result = db_query($query, $types, $params);
-    
-    if ($result) {
-        set_flash('success', "Payment recorded successfully! Receipt Number: $receipt_number");
-        redirect(ADMIN_URL . '/payments/view.php?id=' . db_insert_id());
-    } else {
-        set_flash('error', 'Failed to record payment. Please try again.');
+    if (!$validation_error) {
+        // Sanitize inputs (already done above)
+        $member_id = $payment_for_type === 'MEMBER' ? $form_data['member_id'] : null;
+        $guest_id = $payment_for_type === 'GUEST' ? $form_data['guest_id'] : null;
+        $payment_type = $form_data['payment_type'];
+        $amount = $form_data['amount'];
+        $payment_method = $form_data['payment_mode'];
+        $payment_date = $form_data['payment_date'];
+        $payment_for_month = !empty($form_data['payment_for_month']) ? $form_data['payment_for_month'] : null;
+        $transaction_id = !empty($form_data['transaction_id']) ? $form_data['transaction_id'] : null;
+        $remarks = !empty($form_data['remarks']) ? $form_data['remarks'] : null;
+        
+        // Generate receipt number
+        $receipt_number = generate_receipt_number();
+        
+        // Get current user ID
+        $created_by = $_SESSION['user_id'] ?? 1;
+        
+        // Insert payment
+        $query = "INSERT INTO payments (member_id, guest_id, payment_type, payment_for_type, amount, payment_method, receipt_number, 
+                  transaction_id, payment_date, payment_for_month, remarks, created_by) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $params = [
+                $member_id, 
+                $guest_id, 
+                $payment_type, 
+                $payment_for_type, 
+                $amount, 
+                $payment_method, 
+                $receipt_number, 
+                $transaction_id, 
+                $payment_date, 
+                $payment_for_month, 
+                $remarks, 
+                $created_by
+            ];
+        $types = "iisssssssssi";
+        
+        $result = db_query($query, $types, $params);
+        
+        if ($result) {
+            set_flash('success', "Payment recorded successfully! Receipt Number: $receipt_number");
+            redirect(ADMIN_URL . '/payments/view.php?id=' . db_insert_id());
+        } else {
+            set_flash('error', 'Failed to record payment. Please try again.');
+        }
     }
+} else {
+    // Initialize empty form data for GET requests
+    $form_data = [
+        'payment_for_type' => '',
+        'member_id' => 0,
+        'guest_id' => 0,
+        'payment_type' => '',
+        'amount' => 0,
+        'payment_mode' => '',
+        'payment_date' => date('Y-m-d'),
+        'payment_for_month' => '',
+        'transaction_id' => '',
+        'remarks' => ''
+    ];
 }
 
 // Get members list for dropdown
@@ -132,8 +164,8 @@ include_once '../../../includes/admin_topbar.php';
                                         <label>Payment For <span class="text-danger">*</span></label>
                                         <select name="payment_for_type" class="form-control" required id="paymentForType">
                                             <option value="">Select Payment For</option>
-                                            <option value="MEMBER">Member</option>
-                                            <option value="GUEST">Guest</option>
+                                            <option value="MEMBER" <?php echo ($form_data['payment_for_type'] == 'MEMBER') ? 'selected' : ''; ?>>Member</option>
+                                            <option value="GUEST" <?php echo ($form_data['payment_for_type'] == 'GUEST') ? 'selected' : ''; ?>>Guest</option>
                                         </select>
                                     </div>
                                 </div>
@@ -142,10 +174,10 @@ include_once '../../../includes/admin_topbar.php';
                                         <label>Payment Type <span class="text-danger">*</span></label>
                                         <select name="payment_type" class="form-control" required id="paymentType">
                                             <option value="">Select Payment Type</option>
-                                            <option value="REGISTRATION">Registration Fee</option>
-                                            <option value="RENEWAL">Membership Renewal</option>
-                                            <option value="FINE">Fine</option>
-                                            <option value="OTHER">Other</option>
+                                            <option value="REGISTRATION" <?php echo ($form_data['payment_type'] == 'REGISTRATION') ? 'selected' : ''; ?>>Registration Fee</option>
+                                            <option value="RENEWAL" <?php echo ($form_data['payment_type'] == 'RENEWAL') ? 'selected' : ''; ?>>Membership Renewal</option>
+                                            <option value="FINE" <?php echo ($form_data['payment_type'] == 'FINE') ? 'selected' : ''; ?>>Fine</option>
+                                            <option value="OTHER" <?php echo ($form_data['payment_type'] == 'OTHER') ? 'selected' : ''; ?>>Other</option>
                                         </select>
                                     </div>
                                 </div>
@@ -161,7 +193,7 @@ include_once '../../../includes/admin_topbar.php';
                                             <select name="member_id" class="form-control" id="memberSelect">
                                                 <option value="">Select Member</option>
                                                 <?php foreach ($members as $member): ?>
-                                                    <option value="<?php echo $member['member_id']; ?>">
+                                                    <option value="<?php echo $member['member_id']; ?>" <?php echo ($form_data['member_id'] == $member['member_id']) ? 'selected' : ''; ?>>
                                                         <?php echo clean($member['first_name'] . ' ' . $member['last_name']); ?> 
                                                         (<?php echo clean($member['member_code']); ?>)
                                                     </option>
@@ -182,7 +214,7 @@ include_once '../../../includes/admin_topbar.php';
                                             <select name="guest_id" class="form-control" id="guestSelect">
                                                 <option value="">Select Guest</option>
                                                 <?php foreach ($guests as $guest): ?>
-                                                    <option value="<?php echo $guest['guest_id']; ?>">
+                                                    <option value="<?php echo $guest['guest_id']; ?>" <?php echo ($form_data['guest_id'] == $guest['guest_id']) ? 'selected' : ''; ?>>
                                                         <?php echo clean($guest['first_name'] . ' ' . $guest['last_name']); ?> 
                                                         (<?php echo clean($guest['guest_code']); ?>)
                                                     </option>
@@ -200,7 +232,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Amount (₹) <span class="text-danger">*</span></label>
                                         <input type="number" name="amount" class="form-control" 
-                                               step="0.01" min="0" required id="amount">
+                                               step="0.01" min="0" required id="amount" value="<?php echo $form_data['amount']; ?>">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -208,11 +240,11 @@ include_once '../../../includes/admin_topbar.php';
                                         <label>Payment Method <span class="text-danger">*</span></label>
                                         <select name="payment_mode" class="form-control" required>
                                             <option value="">Select Method</option>
-                                            <option value="CASH">Cash</option>
-                                            <option value="UPI">UPI</option>
-                                            <option value="CARD">Card</option>
-                                            <option value="NET_BANKING">Net Banking</option>
-                                            <option value="CHEQUE">Cheque</option>
+                                            <option value="CASH" <?php echo ($form_data['payment_mode'] == 'CASH') ? 'selected' : ''; ?>>Cash</option>
+                                            <option value="UPI" <?php echo ($form_data['payment_mode'] == 'UPI') ? 'selected' : ''; ?>>UPI</option>
+                                            <option value="CARD" <?php echo ($form_data['payment_mode'] == 'CARD') ? 'selected' : ''; ?>>Card</option>
+                                            <option value="NET_BANKING" <?php echo ($form_data['payment_mode'] == 'NET_BANKING') ? 'selected' : ''; ?>>Net Banking</option>
+                                            <option value="CHEQUE" <?php echo ($form_data['payment_mode'] == 'CHEQUE') ? 'selected' : ''; ?>>Cheque</option>
                                         </select>
                                     </div>
                                 </div>
@@ -220,13 +252,14 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Payment Date <span class="text-danger">*</span></label>
                                         <input type="date" name="payment_date" class="form-control" 
-                                               value="<?php echo date('Y-m-d'); ?>" required>
+                                               value="<?php echo $form_data['payment_date']; ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Payment For Month</label>
                                         <input type="month" name="payment_for_month" class="form-control" 
+                                               value="<?php echo $form_data['payment_for_month']; ?>"
                                                placeholder="e.g., 2026-01 (for renewal)">
                                         <small class="form-text text-muted">For renewal payments only</small>
                                     </div>
@@ -238,6 +271,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Transaction ID</label>
                                         <input type="text" name="transaction_id" class="form-control" 
+                                               value="<?php echo $form_data['transaction_id']; ?>"
                                                placeholder="For digital payments (optional)">
                                     </div>
                                 </div>
@@ -245,7 +279,7 @@ include_once '../../../includes/admin_topbar.php';
                                     <div class="form-group">
                                         <label>Remarks</label>
                                         <textarea name="remarks" class="form-control" rows="2" 
-                                                  placeholder="Additional notes (optional)"></textarea>
+                                                  placeholder="Additional notes (optional)"><?php echo $form_data['remarks']; ?></textarea>
                                     </div>
                                 </div>
                             </div>
