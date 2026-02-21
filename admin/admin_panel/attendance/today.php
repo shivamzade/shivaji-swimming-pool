@@ -18,13 +18,19 @@ if (!is_logged_in()) {
 
 $page_title = "Today's Attendance";
 
-// Get currently inside members
-$query_inside = "SELECT a.*, m.member_code, m.first_name, m.last_name, m.phone 
-                 FROM attendance a 
-                 JOIN members m ON a.member_id = m.member_id 
-                 WHERE a.attendance_date = CURDATE() AND a.exit_time IS NULL 
-                 ORDER BY a.entry_time DESC";
-$members_inside = db_fetch_all($query_inside);
+// Get attendance settings
+$attendance_settings = Attendance::get_attendance_settings();
+
+// Get currently inside members (only for entry_exit mode)
+$members_inside = [];
+if ($attendance_settings['attendance_mode'] === 'entry_exit') {
+    $query_inside = "SELECT a.*, m.member_code, m.first_name, m.last_name, m.phone 
+                     FROM attendance a 
+                     JOIN members m ON a.member_id = m.member_id 
+                     WHERE a.attendance_date = CURDATE() AND a.exit_time IS NULL 
+                     ORDER BY a.entry_time DESC";
+    $members_inside = db_fetch_all($query_inside);
+}
 
 // Get today's total logs (including those who left)
 $query_all = "SELECT a.*, m.member_code, m.first_name, m.last_name, m.phone 
@@ -99,8 +105,35 @@ include_once '../../../includes/admin_topbar.php';
             </div>
         </div>
 
+        <!-- Current Mode Indicator -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card <?php echo $attendance_settings['attendance_mode'] === 'entry_exit' ? 'bg-success' : 'bg-info'; ?> text-white">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 class="mb-0">
+                                    <i class="<?php echo $attendance_settings['attendance_mode'] === 'entry_exit' ? 'icon-login' : 'icon-clock'; ?>"></i>
+                                    Current Mode: <?php echo $attendance_settings['attendance_mode'] === 'entry_exit' ? 'Entry & Exit' : 'Entry Only'; ?>
+                                </h5>
+                            </div>
+                            <div class="col text-right">
+                                <?php if ($attendance_settings['attendance_mode'] === 'entry_only'): ?>
+                                    <small>Auto Exit: <?php echo $attendance_settings['auto_exit_duration']; ?> minutes</small>
+                                <?php endif; ?>
+                                <a href="../settings/attendance.php" class="btn btn-sm btn-light ml-2">
+                                    <i class="icon-settings"></i> Settings
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <!-- Currently Inside List -->
+            <?php if ($attendance_settings['attendance_mode'] === 'entry_exit'): ?>
             <div class="col-lg-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-success text-white">
@@ -153,6 +186,49 @@ include_once '../../../includes/admin_topbar.php';
                     </div>
                 </div>
             </div>
+            <?php else: ?>
+            <div class="col-lg-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <i class="icon-info"></i> Entry Only Mode Information
+                    </div>
+                    <div class="card-body text-center py-5">
+                        <i class="icon-clock" style="font-size: 3rem; color: #17a2b8;"></i>
+                        <h4 class="mt-3">Entry Only Mode Active</h4>
+                        <p class="text-muted">
+                            In Entry Only mode, all entries are automatically completed after <?php echo $attendance_settings['auto_exit_duration']; ?> minutes.<br>
+                            There are no "currently inside" members since exit is automatically marked.
+                        </p>
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h5>Total Entries Today</h5>
+                                        <h3 class="text-primary"><?php echo $stats['total']; ?></h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h5>Auto Exit Duration</h5>
+                                        <h3 class="text-info"><?php echo $attendance_settings['auto_exit_duration']; ?> min</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h5>Completed Sessions</h5>
+                                        <h3 class="text-success"><?php echo $stats['exited']; ?></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
 
             <!-- All Today's Logs -->
             <div class="col-lg-12 mt-3">

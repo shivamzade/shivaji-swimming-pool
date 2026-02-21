@@ -154,6 +154,40 @@ $recent_attendance = db_fetch_all($recent_attendance_query);
                 </div><!--End Row-->
             </div>
         </div><!--End Card-->
+                <!-- Quick Actions Row -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <i class="icon-rocket"></i> Quick Actions
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 col-6 mb-3">
+                                <a href="<?php echo ADMIN_URL; ?>/members/add.php" class="btn btn-block btn-primary">
+                                    <i class="icon-user-follow"></i><br>Add Member
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3">
+                                <a href="<?php echo ADMIN_URL; ?>/attendance/today.php" class="btn btn-block btn-success">
+                                    <i class="icon-calendar"></i><br>Live Dashboard
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3">
+                                <a href="<?php echo ADMIN_URL; ?>/payments/add.php" class="btn btn-block btn-warning">
+                                    <i class="icon-credit-card"></i><br>Add Payment
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3">
+                                <a href="<?php echo ADMIN_URL; ?>/members/index.php" class="btn btn-block btn-info">
+                                    <i class="icon-list"></i><br>View All Members
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--End Row-->    
         
          <!-- Attendance QR Modal -->
          <div class="modal fade" id="qrModal">
@@ -188,39 +222,8 @@ $recent_attendance = db_fetch_all($recent_attendance_query);
                 </div>
             </div>
         </div>
-        
-        <!-- Alert Cards Row -->
-        <div class="row">
-            <!-- Expiring Soon -->
-            <div class="col-12 col-lg-6">
-                <div class="card">
-                    <div class="card-header bg-warning text-white">
-                        <i class="icon-exclamation"></i> Memberships Expiring Soon (7 Days)
-                    </div>
-                    <div class="card-body">
-                        <h3 class="text-warning"><?php echo $expiring_soon; ?> Members</h3>
-                        <p>Need to send renewal reminders to these members.</p>
-                        <a href="<?php echo ADMIN_URL; ?>/members/index.php?filter=expiring" class="btn btn-warning btn-sm">View Details</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Expired Members -->
-            <div class="col-12 col-lg-6">
-                <div class="card">
-                    <div class="card-header bg-danger text-white">
-                        <i class="icon-close"></i> Expired Memberships
-                    </div>
-                    <div class="card-body">
-                        <h3 class="text-danger"><?php echo $expired_members; ?> Members</h3>
-                        <p>These members need to renew their membership.</p>
-                        <a href="<?php echo ADMIN_URL; ?>/members/index.php?filter=expired" class="btn btn-danger btn-sm">View Details</a>
-                    </div>
-                </div>
-            </div>
-        </div><!--End Row-->
-        
-        <!-- Recent Data Row -->
+
+         <!-- Recent Data Row -->
         <div class="row">
             <!-- Recent Members -->
             <div class="col-12 col-lg-6">
@@ -323,40 +326,40 @@ $recent_attendance = db_fetch_all($recent_attendance_query);
             </div>
         </div><!--End Row-->
         
-        <!-- Quick Actions Row -->
+        <!-- Alert Cards Row -->
         <div class="row">
-            <div class="col-12">
+            <!-- Expiring Soon -->
+            <div class="col-12 col-lg-6">
                 <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <i class="icon-rocket"></i> Quick Actions
+                    <div class="card-header bg-warning text-white">
+                        <i class="icon-exclamation"></i> Memberships Expiring Soon (7 Days)
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3 col-6 mb-3">
-                                <a href="<?php echo ADMIN_URL; ?>/members/add.php" class="btn btn-block btn-primary">
-                                    <i class="icon-user-follow"></i><br>Add Member
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <a href="<?php echo ADMIN_URL; ?>/attendance/today.php" class="btn btn-block btn-success">
-                                    <i class="icon-calendar"></i><br>Live Dashboard
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <a href="<?php echo ADMIN_URL; ?>/payments/add.php" class="btn btn-block btn-warning">
-                                    <i class="icon-credit-card"></i><br>Add Payment
-                                </a>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <a href="<?php echo ADMIN_URL; ?>/members/index.php" class="btn btn-block btn-info">
-                                    <i class="icon-list"></i><br>View All Members
-                                </a>
-                            </div>
-                        </div>
+                        <h3 class="text-warning"><?php echo $expiring_soon; ?> Members</h3>
+                        <p>Need to send renewal reminders to these members.</p>
+                        <a href="<?php echo ADMIN_URL; ?>/members/index.php?filter=expiring" class="btn btn-warning btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Expired Members -->
+            <div class="col-12 col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <i class="icon-close"></i> Expired Memberships
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-danger"><?php echo $expired_members; ?> Members</h3>
+                        <p>These members need to renew their membership.</p>
+                        <a href="<?php echo ADMIN_URL; ?>/members/index.php?filter=expired" class="btn btn-danger btn-sm">View Details</a>
                     </div>
                 </div>
             </div>
         </div><!--End Row-->
+        
+       
+        
+
         
         <!--End Dashboard Content-->
         

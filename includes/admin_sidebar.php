@@ -65,6 +65,9 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                 <li><a href="<?php echo ADMIN_URL; ?>/attendance/today.php"><i class="fa fa-circle-o"></i> Live Dashboard</a></li>
                 <li><a href="<?php echo ADMIN_URL; ?>/attendance/mark.php"><i class="fa fa-circle-o"></i> Manual Entry (Backup)</a></li>
                 <li><a href="<?php echo ADMIN_URL; ?>/attendance/report.php"><i class="fa fa-circle-o"></i> Attendance Reports</a></li>
+                <?php if (has_role([1, 2])): // Admin & Super Admin only ?>
+                <li><a href="<?php echo ADMIN_URL; ?>/settings/attendance.php"><i class="fa fa-circle-o"></i> Attendance Settings</a></li>
+                <?php endif; ?>
             </ul>
         </li>
         

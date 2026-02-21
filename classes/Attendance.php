@@ -11,12 +11,38 @@
 class Attendance {
     
     /**
+     * Get attendance settings
+     * 
+     * @return array Attendance settings
+     */
+    private static function get_settings() {
+        static $settings = null;
+        if ($settings === null) {
+            $query = "SELECT setting_key, setting_value FROM settings 
+                      WHERE setting_key IN ('attendance_mode', 'auto_exit_duration', 'allow_multiple_entries')";
+            $result = db_fetch_all($query);
+            $settings = [];
+            foreach ($result as $row) {
+                $settings[$row['setting_key']] = $row['setting_value'];
+            }
+            
+            // Set defaults if not found
+            $settings['attendance_mode'] = $settings['attendance_mode'] ?? 'entry_exit';
+            $settings['auto_exit_duration'] = (int)($settings['auto_exit_duration'] ?? 60);
+            $settings['allow_multiple_entries'] = ($settings['allow_multiple_entries'] ?? '0') === '1';
+        }
+        return $settings;
+    }
+    
+    /**
      * Mark member entry
      * 
      * @param string $member_code Member code (from QR or manual input)
      * @return array ['success' => bool, 'message' => string]
      */
     public static function mark_entry($member_code) {
+        $settings = self::get_settings();
+        
         // 1. Find member
         $member = Member::get_by_code($member_code);
         if (!$member) {
@@ -38,37 +64,57 @@ class Attendance {
             return ['success' => false, 'message' => 'Membership has expired on ' . $member['membership_end_date']];
         }
         
-        // 4. Check if already inside (not exited yet)
-        $inside_query = "SELECT attendance_id FROM attendance 
-                         WHERE member_id = ? AND attendance_date = ? AND exit_time IS NULL";
-        $is_inside = db_fetch_one($inside_query, 'is', [$member_id, $today]);
-        if ($is_inside) {
-            return ['success' => false, 'message' => 'Member is already inside'];
+        // 4. Check if already inside (not exited yet) - only for entry_exit mode
+        if ($settings['attendance_mode'] === 'entry_exit') {
+            $inside_query = "SELECT attendance_id FROM attendance 
+                             WHERE member_id = ? AND attendance_date = ? AND exit_time IS NULL";
+            $is_inside = db_fetch_one($inside_query, 'is', [$member_id, $today]);
+            if ($is_inside) {
+                return ['success' => false, 'message' => 'Member is already inside'];
+            }
         }
         
-        // 5. Check if already attended today (Restriction: 1 entry per day)
-        // Note: For public pools, sometimes multiple entries are allowed. 
-        // We'll enforce 1 entry per day unless configured otherwise.
-        $attended_query = "SELECT attendance_id FROM attendance 
-                           WHERE member_id = ? AND attendance_date = ?";
-        $has_attended = db_fetch_one($attended_query, 'is', [$member_id, $today]);
-        if ($has_attended) {
-             return ['success' => false, 'message' => 'Member already entry for today'];
+        // 5. Check if already attended today (only if multiple entries not allowed)
+        if (!$settings['allow_multiple_entries']) {
+            $attended_query = "SELECT attendance_id FROM attendance 
+                               WHERE member_id = ? AND attendance_date = ?";
+            $has_attended = db_fetch_one($attended_query, 'is', [$member_id, $today]);
+            if ($has_attended) {
+                 return ['success' => false, 'message' => 'Member already entered for today'];
+            }
         }
         
         // 6. Mark entry
         $entry_time = date('H:i:s');
-        $query = "INSERT INTO attendance (member_id, attendance_date, entry_time, status, created_by)
-                  VALUES (?, ?, ?, 'PRESENT', ?)";
+        $exit_time = null;
+        $duration_minutes = null;
         
-        $result = db_query($query, 'issi', [$member_id, $today, $entry_time, get_user_id()]);
+        // For entry_only mode, set automatic exit time and duration
+        if ($settings['attendance_mode'] === 'entry_only') {
+            $exit_timestamp = strtotime($entry_time) + ($settings['auto_exit_duration'] * 60);
+            $exit_time = date('H:i:s', $exit_timestamp);
+            $duration_minutes = $settings['auto_exit_duration'];
+        }
+        
+        $query = "INSERT INTO attendance (member_id, attendance_date, entry_time, exit_time, duration_minutes, status, created_by)
+                  VALUES (?, ?, ?, ?, ?, 'PRESENT', ?)";
+        
+        $result = db_query($query, 'isssii', [$member_id, $today, $entry_time, $exit_time, $duration_minutes, get_user_id()]);
         
         if ($result) {
             log_activity('ATTENDANCE_ENTRY', 'attendance', db_insert_id(), null, [
                 'member_code' => $member_code,
-                'name' => $member['first_name'] . ' ' . $member['last_name']
+                'name' => $member['first_name'] . ' ' . $member['last_name'],
+                'mode' => $settings['attendance_mode'],
+                'auto_exit' => $exit_time ? 'Yes (' . $duration_minutes . ' min)' : 'No'
             ]);
-            return ['success' => true, 'message' => 'Entry marked: ' . $member['first_name'] . ' @ ' . $entry_time];
+            
+            $message = 'Entry marked: ' . $member['first_name'] . ' @ ' . $entry_time;
+            if ($exit_time) {
+                $message .= ' (Auto exit: ' . $exit_time . ')';
+            }
+            
+            return ['success' => true, 'message' => $message];
         }
         
         return ['success' => false, 'message' => 'Database error marking entry'];
@@ -81,6 +127,13 @@ class Attendance {
      * @return array ['success' => bool, 'message' => string]
      */
     public static function mark_exit($member_code) {
+        $settings = self::get_settings();
+        
+        // In entry_only mode, manual exit is not allowed
+        if ($settings['attendance_mode'] === 'entry_only') {
+            return ['success' => false, 'message' => 'Manual exit not allowed in Entry Only mode'];
+        }
+        
         $member = Member::get_by_code($member_code);
         if (!$member) {
             return ['success' => false, 'message' => 'Member not found'];
@@ -128,6 +181,13 @@ class Attendance {
      * @return array
      */
     public static function get_currently_inside() {
+        $settings = self::get_settings();
+        
+        // In entry_only mode, no one is "currently inside" since exit is automatic
+        if ($settings['attendance_mode'] === 'entry_only') {
+            return [];
+        }
+        
         $query = "SELECT a.*, m.member_code, m.first_name, m.last_name, m.phone
                   FROM attendance a
                   JOIN members m ON a.member_id = m.member_id
@@ -207,26 +267,48 @@ class Attendance {
      * @return array
      */
     public static function get_today_stats() {
-
+        $settings = self::get_settings();
+        
         $stats = [
             'total_entries' => 0,
             'currently_inside' => 0,
             'exited' => 0
         ];
         
-        $query = "SELECT 
-                  COUNT(*) as total,
-                  SUM(IF(exit_time IS NULL, 1, 0)) as inside,
-                  SUM(IF(exit_time IS NOT NULL, 1, 0)) as exited
-                  FROM attendance WHERE attendance_date = CURDATE()";
-        
-        $result = db_fetch_one($query);
-        if ($result) {
-            $stats['total_entries'] = (int)$result['total'];
-            $stats['currently_inside'] = (int)$result['inside'];
-            $stats['exited'] = (int)$result['exited'];
+        if ($settings['attendance_mode'] === 'entry_only') {
+            // In entry_only mode, everyone is considered "exited" since exit is automatic
+            $query = "SELECT COUNT(*) as total FROM attendance WHERE attendance_date = CURDATE()";
+            $result = db_fetch_one($query);
+            if ($result) {
+                $stats['total_entries'] = (int)$result['total'];
+                $stats['currently_inside'] = 0;
+                $stats['exited'] = (int)$result['total'];
+            }
+        } else {
+            // In entry_exit mode, use normal logic
+            $query = "SELECT 
+                      COUNT(*) as total,
+                      SUM(IF(exit_time IS NULL, 1, 0)) as inside,
+                      SUM(IF(exit_time IS NOT NULL, 1, 0)) as exited
+                      FROM attendance WHERE attendance_date = CURDATE()";
+            
+            $result = db_fetch_one($query);
+            if ($result) {
+                $stats['total_entries'] = (int)$result['total'];
+                $stats['currently_inside'] = (int)$result['inside'];
+                $stats['exited'] = (int)$result['exited'];
+            }
         }
         
         return $stats;
+    }
+    
+    /**
+     * Get current attendance settings (public method)
+     * 
+     * @return array Attendance settings
+     */
+    public static function get_attendance_settings() {
+        return self::get_settings();
     }
 }

@@ -35,6 +35,7 @@ if (is_post_request()) {
 // Get stats for the top cards
 $stats = Attendance::get_today_stats();
 $inside_members = Attendance::get_currently_inside();
+$attendance_settings = Attendance::get_attendance_settings();
 
 // Include header
 include_once '../../../includes/admin_header.php';
@@ -55,6 +56,7 @@ include_once '../../../includes/admin_topbar.php';
                     </div>
                 </div>
             </div>
+            <?php if ($attendance_settings['attendance_mode'] === 'entry_exit'): ?>
             <div class="col-12 col-md-4">
                 <div class="card bg-success text-white text-center">
                     <div class="card-body">
@@ -71,6 +73,16 @@ include_once '../../../includes/admin_topbar.php';
                     </div>
                 </div>
             </div>
+            <?php else: ?>
+            <div class="col-12 col-md-8">
+                <div class="card bg-info text-white text-center">
+                    <div class="card-body">
+                        <h5>Mode: Entry Only (Auto Exit: <?php echo $attendance_settings['auto_exit_duration']; ?> min)</h5>
+                        <h2>All entries completed</h2>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
 
         <div class="row">
@@ -94,12 +106,18 @@ include_once '../../../includes/admin_topbar.php';
                             
                             <div class="mb-4">
                                 <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                                    <?php if ($attendance_settings['attendance_mode'] === 'entry_exit'): ?>
                                     <label class="btn btn-outline-success active">
                                         <input type="radio" name="action" value="entry" checked> <i class="icon-login"></i> ENTRY
                                     </label>
                                     <label class="btn btn-outline-danger">
                                         <input type="radio" name="action" value="exit"> <i class="icon-logout"></i> EXIT
                                     </label>
+                                    <?php else: ?>
+                                    <label class="btn btn-outline-success active w-100">
+                                        <input type="radio" name="action" value="entry" checked> <i class="icon-clock"></i> ENTRY ONLY
+                                    </label>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
@@ -120,10 +138,18 @@ include_once '../../../includes/admin_topbar.php';
                         <div class="mt-4 p-3 bg-light rounded text-left">
                             <h6><i class="icon-info"></i> Instructions:</h6>
                             <ul class="small mb-0 pl-3">
+                                <?php if ($attendance_settings['attendance_mode'] === 'entry_exit'): ?>
                                 <li>Select <strong>ENTRY</strong> or <strong>EXIT</strong> mode above.</li>
                                 <li>Ensure the cursor is in the text field.</li>
                                 <li>Scan the QR code on the member's card.</li>
                                 <li>Wait for the confirmation message.</li>
+                                <?php else: ?>
+                                <li><strong>Entry Only Mode:</strong> Members scan only for entry.</li>
+                                <li>Exit will be automatically marked after <?php echo $attendance_settings['auto_exit_duration']; ?> minutes.</li>
+                                <li>Ensure the cursor is in the text field.</li>
+                                <li>Scan the QR code on the member's card.</li>
+                                <li>Wait for the confirmation message with auto-exit time.</li>
+                                <?php endif; ?>
                             </ul>
                         </div>
                     </div>
@@ -131,6 +157,7 @@ include_once '../../../includes/admin_topbar.php';
             </div>
 
             <!-- Live Dashboard -->
+            <?php if ($attendance_settings['attendance_mode'] === 'entry_exit'): ?>
             <div class="col-lg-7">
                 <div class="card">
                     <div class="card-header bg-light">
@@ -191,6 +218,28 @@ include_once '../../../includes/admin_topbar.php';
                     </div>
                 </div>
             </div>
+            <?php else: ?>
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="icon-info"></i> Entry Only Mode Active</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="py-5">
+                            <i class="icon-clock" style="font-size: 4rem; color: #17a2b8;"></i>
+                            <h4 class="mt-3">Entry Only Mode</h4>
+                            <p class="text-muted">
+                                All entries are automatically completed after <?php echo $attendance_settings['auto_exit_duration']; ?> minutes.<br>
+                                No manual exit tracking is required in this mode.
+                            </p>
+                            <div class="alert alert-light">
+                                <strong>Today's Total Entries:</strong> <?php echo $stats['total_entries']; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
         
     </div>
