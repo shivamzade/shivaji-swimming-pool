@@ -53,7 +53,10 @@ include_once '../../../includes/admin_topbar.php';
                         <!-- Receipt Header -->
                         <div class="row mb-4">
                             <div class="col-6">
-                                <h3 class="text-primary mb-0"><?php echo clean(get_setting('pool_name', 'Shivaji Swimming Pool')); ?></h3>
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="<?php echo BASE_URL; ?>/assets/img/logo.jpg" alt="Logo" style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%; margin-right: 12px;">
+                                    <h3 class="text-primary mb-0"><?php echo clean(get_setting('pool_name', 'Shivaji Swimming Pool')); ?></h3>
+                                </div>
                                 <p class="text-muted small">
                                     <?php echo clean(get_setting('pool_address', 'Shivaji Park, Mumbai')); ?><br>
                                     Phone: <?php echo clean(get_setting('pool_phone', '9876543210')); ?>

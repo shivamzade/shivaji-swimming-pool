@@ -108,7 +108,7 @@ $remembered_username = $_COOKIE['remember_user'] ?? '';
             <div class="card-body">
                 <div class="card-content p-2">
                     <div class="text-center">
-                        <img src="admin_panel/assets/images/logo-icon.png" alt="Logo">
+                        <img src="../assets/img/logo.jpg" alt="Logo" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 15px;">
                         <div class="logo-text"><?php echo POOL_NAME; ?></div>
                     </div>
                     

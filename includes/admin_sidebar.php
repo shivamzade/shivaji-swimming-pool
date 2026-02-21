@@ -28,8 +28,8 @@ function is_section_active($section, $current_section) {
 <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
     <div class="brand-logo">
         <a href="<?php echo ADMIN_URL; ?>/index.php">
-            <img src="<?php echo ADMIN_URL; ?>/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
-            <h5 class="logo-text"><?php echo POOL_NAME; ?></h5>
+            <img src="<?php echo BASE_URL; ?>/assets/img/logo.jpg" class="logo-icon" alt="logo icon" style="width: 30px; height: 30px; object-fit: cover; border-radius: 50%;">
+            <h5 class="logo-text">Admin Panel</h5>
         </a>
     </div>
     
