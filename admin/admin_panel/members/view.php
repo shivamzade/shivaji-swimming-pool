@@ -90,6 +90,34 @@ include_once '../../../includes/admin_topbar.php';
                             <a href="print_form.php?id=<?php echo $member_id; ?>" target="_blank" class="btn btn-warning">
                                 <i class="icon-printer"></i> Print
                             </a>
+                            <?php
+                            // WhatsApp Reminder Button
+                            $show_wa_btn = false;
+                            $wa_msg = '';
+                            $m_name = clean($member['first_name']);
+                            $days_left = $member['membership_end_date'] ? (int)((strtotime($member['membership_end_date']) - time()) / 86400) : null;
+                            
+                            if ($member['status'] === 'EXPIRED' && $member['membership_end_date']) {
+                                $show_wa_btn = true;
+                                $exp_date = date('d M Y', strtotime($member['membership_end_date']));
+                                $wa_msg = "Namaste {$m_name}! 🙏\n\nThis is a reminder from *" . POOL_NAME . "*.\n\nYour membership expired on *{$exp_date}*. Kindly visit us and renew your membership at the earliest to continue enjoying our facilities.\n\nThank you! 🏊";
+                            } elseif ($days_left !== null && $days_left <= 7 && $days_left >= 0) {
+                                $show_wa_btn = true;
+                                $exp_date = date('d M Y', strtotime($member['membership_end_date']));
+                                $wa_msg = "Namaste {$m_name}! 🙏\n\nThis is a reminder from *" . POOL_NAME . "*.\n\nYour membership is expiring on *{$exp_date}* ({$days_left} days left). Kindly renew before it expires to avoid any break in service.\n\nThank you! 🏊";
+                            }
+                            
+                            if ($show_wa_btn && !empty($member['phone'])):
+                                $wa_phone = preg_replace('/[^0-9]/', '', $member['phone']);
+                                if (strlen($wa_phone) === 10) $wa_phone = '91' . $wa_phone;
+                                $wa_link = 'https://wa.me/' . $wa_phone . '?text=' . urlencode($wa_msg);
+                            ?>
+                            <a href="<?php echo $wa_link; ?>" target="_blank" class="btn" 
+                               title="Send WhatsApp Reminder"
+                               style="background-color: #25D366; border-color: #25D366; color: #fff;">
+                                <i class="fa fa-whatsapp"></i> Remind
+                            </a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

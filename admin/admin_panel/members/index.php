@@ -169,6 +169,34 @@ include_once '../../../includes/admin_topbar.php';
                                                         <i class="icon-refresh"></i>
                                                     </a>
                                                     <?php endif; ?>
+                                                    <?php 
+                                                    // Show WhatsApp reminder for expired or expiring soon members
+                                                    $show_wa = false;
+                                                    $wa_message = '';
+                                                    $member_name = clean($member['first_name']);
+                                                    
+                                                    if ($member['status'] === 'EXPIRED' && $member['membership_end_date']) {
+                                                        $show_wa = true;
+                                                        $expiry_date = date('d M Y', strtotime($member['membership_end_date']));
+                                                        $wa_message = "Namaste {$member_name}! 🙏\n\nThis is a reminder from *" . POOL_NAME . "*.\n\nYour membership expired on *{$expiry_date}*. Kindly visit us and renew your membership at the earliest to continue enjoying our facilities.\n\nThank you! 🏊";
+                                                    } elseif ($member['membership_end_date'] && isset($member['days_remaining']) && $member['days_remaining'] !== null && $member['days_remaining'] <= 7 && $member['days_remaining'] >= 0) {
+                                                        $show_wa = true;
+                                                        $expiry_date = date('d M Y', strtotime($member['membership_end_date']));
+                                                        $days = $member['days_remaining'];
+                                                        $wa_message = "Namaste {$member_name}! 🙏\n\nThis is a reminder from *" . POOL_NAME . "*.\n\nYour membership is expiring on *{$expiry_date}* ({$days} days left). Kindly renew before it expires to avoid any break in service.\n\nThank you! 🏊";
+                                                    }
+                                                    
+                                                    if ($show_wa && !empty($member['phone'])):
+                                                        $phone = preg_replace('/[^0-9]/', '', $member['phone']);
+                                                        if (strlen($phone) === 10) $phone = '91' . $phone;
+                                                        $wa_url = 'https://wa.me/' . $phone . '?text=' . urlencode($wa_message);
+                                                    ?>
+                                                    <a href="<?php echo $wa_url; ?>" 
+                                                       target="_blank" class="btn btn-success" title="Send WhatsApp Reminder"
+                                                       style="background-color: #25D366; border-color: #25D366;">
+                                                        <i class="fa fa-whatsapp"></i>
+                                                    </a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </td>
                                         </tr>
