@@ -258,6 +258,53 @@ include_once '../../../includes/admin_topbar.php';
                                 </div>
                             </div>
                             
+                            <!-- Batch Assignment -->
+                            <h5 class="border-bottom pb-2 mb-3 mt-4">Batch Assignment</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Preferred Batch</label>
+                                        <select name="batch_id" class="form-control">
+                                            <option value="">-- Select Batch (Optional) --</option>
+                                            <?php
+                                            try {
+                                                $batch_sql = "
+                                                    SELECT b.*, (b.max_capacity - COUNT(mb.assignment_id)) as available_slots
+                                                    FROM batches b
+                                                    LEFT JOIN member_batches mb ON b.batch_id = mb.batch_id AND mb.status = 'ACTIVE'
+                                                    WHERE b.is_active = 1
+                                                    GROUP BY b.batch_id
+                                                    HAVING available_slots > 0
+                                                    ORDER BY b.start_time
+                                                ";
+                                                $batch_result = $conn->query($batch_sql);
+                                                $batches = $batch_result ? $batch_result->fetch_all(MYSQLI_ASSOC) : [];
+                                                
+                                                foreach ($batches as $b) {
+                                                    $selected = (isset($form_data['batch_id']) && $form_data['batch_id'] == $b['batch_id']) ? 'selected' : '';
+                                                    echo "<option value='{$b['batch_id']}' {$selected}>";
+                                                    echo htmlspecialchars($b['batch_name']) . " (" . date('h:i A', strtotime($b['start_time'])) . " - " . date('h:i A', strtotime($b['end_time'])) . ")";
+                                                    echo " [{$b['available_slots']} slots available]";
+                                                    echo "</option>";
+                                                }
+                                            } catch (Exception $e) {
+                                                echo "<option value=''>Error loading batches</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                        <small class="form-text text-muted">Assign member to a preferred batch (optional)</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Batch Remarks</label>
+                                        <input type="text" name="batch_remarks" class="form-control" 
+                                               value="<?php echo $form_data['batch_remarks'] ?? ''; ?>"
+                                               placeholder="Any remarks about batch assignment (optional)">
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <!-- Emergency Contact -->
                             <h5 class="border-bottom pb-2 mb-3 mt-4">Emergency Contact</h5>
                             <div class="row">

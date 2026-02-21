@@ -132,6 +132,18 @@ class Member {
         if ($result) {
             $member_id = db_insert_id();
             
+            // Handle batch assignment if provided
+            if (!empty($data['batch_id'])) {
+                $batch_query = "INSERT INTO member_batches (member_id, batch_id, assigned_date, remarks, created_by) 
+                                VALUES (?, ?, CURDATE(), ?, ?)";
+                db_query($batch_query, 'iisi', [
+                    $member_id,
+                    $data['batch_id'],
+                    $data['batch_remarks'] ?? null,
+                    get_user_id()
+                ]);
+            }
+            
             log_activity('MEMBER_CREATED', 'members', $member_id, null, [
                 'member_code' => $member_code,
                 'name' => $data['first_name'] . ' ' . $data['last_name']

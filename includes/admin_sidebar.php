@@ -41,6 +41,21 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             </ul>
         </li>
         
+        <!-- Batches Management -->
+        <li>
+            <a href="javaScript:void();" class="waves-effect">
+                <i class="icon-clock"></i>
+                <span>Batches</span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="sidebar-submenu">
+                <li><a href="<?php echo ADMIN_URL; ?>/batches/index.php"><i class="fa fa-circle-o"></i> All Batches</a></li>
+                <?php if (has_role([1, 2])): ?>
+                <li><a href="<?php echo ADMIN_URL; ?>/batches/add.php"><i class="fa fa-circle-o"></i> Add Batch</a></li>
+                <?php endif; ?>
+            </ul>
+        </li>
+        
         <!-- Guests Management -->
         <li>
             <a href="javaScript:void();" class="waves-effect">

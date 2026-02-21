@@ -170,6 +170,56 @@ include_once '../../../includes/admin_topbar.php';
                                     </div>
                                 </div>
                                 
+                                <h5 class="mb-3">Batch Assignment</h5>
+                                <div class="row mb-4">
+                                    <?php
+                                    // Get member's batches
+                                    $batch_query = "SELECT b.*, mb.assigned_date, mb.remarks 
+                                                   FROM batches b 
+                                                   JOIN member_batches mb ON b.batch_id = mb.batch_id 
+                                                   WHERE mb.member_id = ? AND mb.status = 'ACTIVE' 
+                                                   ORDER BY b.start_time";
+                                    $member_batches = db_fetch_all($batch_query, 'i', [$member_id]);
+                                    ?>
+                                    <div class="col-12">
+                                        <?php if (empty($member_batches)): ?>
+                                            <p class="text-muted">No batch assigned</p>
+                                            <?php if (has_role([1, 2])): ?>
+                                            <a href="<?php echo ADMIN_URL; ?>/batches/assign_member.php?member_id=<?php echo $member_id; ?>" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-plus"></i> Assign to Batch
+                                            </a>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <?php foreach ($member_batches as $batch): ?>
+                                                <div class="alert alert-info mb-2">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <strong><?php echo clean($batch['batch_name']); ?></strong><br>
+                                                            <small class="text-muted">
+                                                                <i class="fa fa-clock-o"></i> 
+                                                                <?php echo date('h:i A', strtotime($batch['start_time'])); ?> - 
+                                                                <?php echo date('h:i A', strtotime($batch['end_time'])); ?>
+                                                            </small>
+                                                            <?php if ($batch['remarks']): ?>
+                                                                <br><small><em><?php echo clean($batch['remarks']); ?></em></small>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                        <div>
+                                                            <small class="text-muted">Assigned: <?php echo format_date($batch['assigned_date']); ?></small>
+                                                            <?php if (has_role([1, 2])): ?>
+                                                            <br><a href="<?php echo ADMIN_URL; ?>/batches/remove_member.php?batch_id=<?php echo $batch['batch_id']; ?>&member_id=<?php echo $member_id; ?>" 
+                                                                   class="btn btn-xs btn-danger" onclick="return confirm('Remove from batch?')">
+                                                                <i class="fa fa-trash"></i> Remove
+                                                            </a>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                
                                 <h5 class="mb-3">Address Details</h5>
                                 <div class="row mb-4">
                                     <div class="col-sm-12">
