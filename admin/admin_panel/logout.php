@@ -7,8 +7,8 @@
  */
 
 // Load configuration
-require_once '../config/config.php';
-require_once '../db_connect.php';
+require_once '../../config/config.php';
+require_once '../../db_connect.php';
 
 // Logout user
 Auth::logout();
@@ -17,4 +17,4 @@ Auth::logout();
 set_flash('success', 'You have been logged out successfully');
 
 // Redirect to login page
-redirect(ADMIN_URL . '/index.php');
+redirect(BASE_URL . '/admin/index.php');

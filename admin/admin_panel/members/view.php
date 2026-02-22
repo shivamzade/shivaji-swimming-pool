@@ -260,7 +260,7 @@ include_once '../../../includes/admin_topbar.php';
                                             <?php endif; ?>
                                         <?php else: ?>
                                             <?php foreach ($member_batches as $batch): ?>
-                                                <div class="alert alert-info mb-2">
+                                                <div class="card mb-2 p-2">
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <div>
                                                             <strong><?php echo clean($batch['batch_name']); ?></strong><br>

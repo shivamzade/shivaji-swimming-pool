@@ -111,6 +111,7 @@ class Auth {
         
         if ($user_id) {
             log_activity('USER_LOGOUT', 'users', $user_id);
+            self::clear_remember_me_token($user_id);
         }
         
         // Destroy session
@@ -121,7 +122,97 @@ class Auth {
         session_start();
         session_regenerate_id(true);
     }
-    
+
+    /**
+     * Generate and store a remember me token
+     * 
+     * @param int $user_id User ID
+     */
+    public static function create_remember_me_token($user_id) {
+        $selector = base64_encode(random_bytes(18));
+        $validator = random_bytes(32);
+        
+        $token = $selector . ':' . base64_encode($validator);
+        $hashed_validator = hash('sha256', $validator);
+        $expires_at = date('Y-m-d H:i:s', time() + (86400 * 30)); // 30 days
+        
+        $query = "INSERT INTO user_tokens (user_id, selector, hashed_validator, expires_at) 
+                  VALUES (?, ?, ?, ?)";
+        
+        db_query($query, 'isss', [$user_id, $selector, $hashed_validator, $expires_at]);
+        
+        // Set cookie
+        setcookie('remember_me', $token, time() + (86400 * 30), '/', '', false, true);
+    }
+
+    /**
+     * Check for remember me cookie and restore session
+     * 
+     * @return bool True if session restored, false otherwise
+     */
+    public static function check_remember_me() {
+        if (is_logged_in() || empty($_COOKIE['remember_me'])) {
+            return false;
+        }
+        
+        $parts = explode(':', $_COOKIE['remember_me']);
+        if (count($parts) !== 2) {
+            return false;
+        }
+        
+        list($selector, $validator) = $parts;
+        $validator = base64_decode($validator);
+        
+        $query = "SELECT * FROM user_tokens WHERE selector = ? AND expires_at > NOW() LIMIT 1";
+        $token_data = db_fetch_one($query, 's', [$selector]);
+        
+        if (!$token_data) {
+            return false;
+        }
+        
+        // Verify validator
+        if (!hash_equals($token_data['hashed_validator'], hash('sha256', $validator))) {
+            return false;
+        }
+        
+        // Find user
+        $user = self::get_user_by_id($token_data['user_id']);
+        if (!$user || $user['is_active'] != 1) {
+            return false;
+        }
+        
+        // Restore session
+        self::create_session($user);
+        
+        // Rotate token for security
+        self::clear_remember_me_token($user['user_id'], $selector);
+        self::create_remember_me_token($user['user_id']);
+        
+        log_activity('USER_AUTO_LOGIN', 'users', $user['user_id']);
+        
+        return true;
+    }
+
+    /**
+     * Clear remember me tokens
+     * 
+     * @param int $user_id User ID
+     * @param string $selector Specific selector to clear (optional)
+     */
+    public static function clear_remember_me_token($user_id, $selector = null) {
+        if ($selector) {
+            $query = "DELETE FROM user_tokens WHERE user_id = ? AND selector = ?";
+            db_query($query, 'is', [$user_id, $selector]);
+        } else {
+            $query = "DELETE FROM user_tokens WHERE user_id = ?";
+            db_query($query, 'i', [$user_id]);
+        }
+        
+        if (isset($_COOKIE['remember_me'])) {
+            setcookie('remember_me', '', time() - 3600, '/');
+        }
+    }
+
     /**
      * Check if session is valid
      * 

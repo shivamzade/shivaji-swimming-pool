@@ -10,9 +10,13 @@
 require_once '../config/config.php';
 require_once '../db_connect.php';
 
-// Redirect if already logged in
-if (is_logged_in()) {
-    redirect(BASE_URL . '/admin/admin_panel/index.php');
+// Check for remember me cookie and auto-login
+if (!is_logged_in()) {
+    if (Auth::check_remember_me()) {
+        redirect(ADMIN_URL . '/index.php');
+    }
+} else {
+    redirect(ADMIN_URL . '/index.php');
 }
 
 // Handle login form submission
@@ -29,15 +33,15 @@ if (is_post_request()) {
         $result = Auth::login($username, $password);
         
         if ($result['success']) {
-            // Set remember me cookie if checked
+            // Set remember me token if checked
             if ($remember_me) {
-                setcookie('remember_user', $username, time() + (86400 * 30), '/'); // 30 days
+                Auth::create_remember_me_token($result['user']['user_id']);
             }
             
             set_flash('success', 'Welcome back, ' . $result['user']['full_name'] . '!');
             
             // Redirect to intended page or dashboard
-            $redirect = $_SESSION['redirect_after_login'] ?? BASE_URL . '/admin/admin_panel/index.php';
+            $redirect = $_SESSION['redirect_after_login'] ?? ADMIN_URL . '/index.php';
             unset($_SESSION['redirect_after_login']);
             
             redirect($redirect);

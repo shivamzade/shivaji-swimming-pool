@@ -114,7 +114,8 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
         <div class="photo-box">
             <?php if (!$is_blank && $member['photo_path']): ?>
          <!-- Image support could be added here if path is resolvable -->
-         PHOTO
+          <img src="<?php echo ASSETS_URL . '/uploads/members/' . clean($member['photo_path']); ?>">
+
             <?php else: ?>
                 Affix Recent<br>Passport Size<br>Photograph
             <?php endif; ?>
