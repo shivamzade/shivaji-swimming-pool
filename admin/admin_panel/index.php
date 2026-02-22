@@ -163,24 +163,35 @@ $recent_attendance = db_fetch_all($recent_attendance_query);
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3 col-6 mb-3">
+                            <div class="col-md-2 col-6 mb-3">
                                 <a href="<?php echo ADMIN_URL; ?>/members/add.php" class="btn btn-block btn-primary">
                                     <i class="icon-user-follow"></i><br>Add Member
                                 </a>
                             </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <a href="<?php echo ADMIN_URL; ?>/attendance/today.php" class="btn btn-block btn-success">
-                                    <i class="icon-calendar"></i><br>Live Dashboard
+                            <div class="col-md-2 col-6 mb-3">
+                                <a href="<?php echo ADMIN_URL; ?>/guests/index.php" class="btn btn-block btn-secondary">
+                                    <i class="icon-people"></i><br>Guests
                                 </a>
                             </div>
-                            <div class="col-md-3 col-6 mb-3">
+                            <div class="col-md-2 col-6 mb-3">
                                 <a href="<?php echo ADMIN_URL; ?>/payments/add.php" class="btn btn-block btn-warning">
                                     <i class="icon-credit-card"></i><br>Add Payment
                                 </a>
                             </div>
-                            <div class="col-md-3 col-6 mb-3">
+                            <div class="col-md-2 col-6 mb-3">
+                                <a href="<?php echo ADMIN_URL; ?>/batches/index.php" class="btn btn-block btn-danger">
+                                    <i class="icon-clock"></i><br>Batches
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6 mb-3">
                                 <a href="<?php echo ADMIN_URL; ?>/members/index.php" class="btn btn-block btn-info">
                                     <i class="icon-list"></i><br>View All Members
+                                </a>
+                            </div>
+                           
+                             <div class="col-md-2 col-6 mb-3">
+                                <a href="<?php echo ADMIN_URL; ?>/reports/attendance.php" class="btn btn-block btn-success">
+                                    <i class="icon-calendar"></i><br>Attendance Report
                                 </a>
                             </div>
                         </div>
