@@ -50,7 +50,7 @@ if (is_post_request() && isset($_FILES['member_photo'])) {
 }
 
 // Set page title
-$page_title = 'Member Profile: ' . $member['first_name'] . ' ' . $member['last_name'];
+$page_title = 'Member Profile: ' . $member['first_name'] . ' ' . ($member['middle_name'] ?? '') . ' ' . $member['last_name'];
 
 // Include header
 include_once '../../../includes/admin_header.php';
@@ -89,7 +89,7 @@ include_once '../../../includes/admin_topbar.php';
                         </form>
                     </div>
                     <div class="card-body pt-3 text-center">
-                        <h5 class="card-title"><?php echo clean($member['first_name'] . ' ' . $member['last_name']); ?></h5>
+                        <h5 class="card-title"><?php echo clean($member['first_name'] . ' ' . ($member['middle_name'] ?? '') . ' ' . $member['last_name']); ?></h5>
                         <p class="card-text text-muted"><?php echo clean($member['member_code']); ?></p>
                         
                         <div class="mb-3">
@@ -135,7 +135,7 @@ include_once '../../../includes/admin_topbar.php';
                             // WhatsApp Reminder Button
                             $show_wa_btn = false;
                             $wa_msg = '';
-                            $m_name = clean($member['first_name']);
+                            $m_name = clean($member['first_name'] . ' ' . ($member['middle_name'] ?? ''));
                             $days_left = $member['membership_end_date'] ? (int)((strtotime($member['membership_end_date']) - time()) / 86400) : null;
                             
                             if ($member['status'] === 'EXPIRED' && $member['membership_end_date']) {

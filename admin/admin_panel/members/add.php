@@ -20,6 +20,7 @@ if (is_post_request()) {
     // Store form data for redisplay on error
     $form_data = [
         'first_name' => sanitize_input($_POST['first_name'] ?? ''),
+        'middle_name' => sanitize_input($_POST['middle_name'] ?? ''),
         'last_name' => sanitize_input($_POST['last_name'] ?? ''),
         'gender' => sanitize_input($_POST['gender'] ?? ''),
         'date_of_birth' => sanitize_input($_POST['date_of_birth'] ?? ''),
@@ -53,6 +54,7 @@ if (is_post_request()) {
     // Initialize empty form data for GET requests
     $form_data = [
         'first_name' => '',
+        'middle_name' => '',
         'last_name' => '',
         'gender' => '',
         'date_of_birth' => '',
@@ -74,6 +76,17 @@ if (is_post_request()) {
         'remarks' => ''
     ];
 }
+
+// Hardcoded Maharashtra cities
+$maharashtra_cities = [
+    'Ahmednagar', 'Akola', 'Amravati', 'Aurangabad (Chhatrapati Sambhajinagar)', 
+    'Beed', 'Bhandara', 'Buldhana', 'Chandrapur', 'Dhule', 'Gadchiroli', 
+    'Gondia', 'Hingoli', 'Jalgaon', 'Jalna', 'Kolhapur', 'Latur', 
+    'Mumbai City', 'Mumbai Suburban', 'Nagpur', 'Nanded', 'Nandurbar', 
+    'Nashik', 'Osmanabad', 'Palghar', 'Parbhani', 'Pune', 'Raigad', 
+    'Ratnagiri', 'Sangli', 'Satara', 'Sindhudurg', 'Solapur', 'Thane', 
+    'Wardha', 'Washim', 'Yavatmal'
+];
 
 // Include header
 include_once '../../../includes/admin_header.php';
@@ -104,19 +117,25 @@ include_once '../../../includes/admin_topbar.php';
                             <!-- Personal Information -->
                             <h5 class="border-bottom pb-2 mb-3">Personal Information</h5>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>First Name <span class="text-danger">*</span></label>
                                         <input type="text" name="first_name" class="form-control" value="<?php echo $form_data['first_name']; ?>" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Middle Name</label>
+                                        <input type="text" name="middle_name" class="form-control" value="<?php echo $form_data['middle_name']; ?>" placeholder="Optional">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Last Name <span class="text-danger">*</span></label>
                                         <input type="text" name="last_name" class="form-control" value="<?php echo $form_data['last_name']; ?>" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Gender <span class="text-danger">*</span></label>
                                         <select name="gender" class="form-control" required>
@@ -215,13 +234,20 @@ include_once '../../../includes/admin_topbar.php';
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>City</label>
-                                        <input type="text" name="city" class="form-control" value="<?php echo $form_data['city']; ?>">
+                                        <select name="city" class="form-control">
+                                            <option value="">Select City</option>
+                                            <?php foreach ($maharashtra_cities as $city): ?>
+                                                <option value="<?php echo htmlspecialchars($city); ?>" <?php echo ($form_data['city'] == $city) ? 'selected' : ''; ?>>
+                                                    <?php echo htmlspecialchars($city); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>State</label>
-                                        <input type="text" name="state" class="form-control" value="<?php echo $form_data['state']; ?>">
+                                        <input type="text" name="state" class="form-control" value="<?php echo $form_data['state'] ?: 'Maharashtra'; ?>">
                                     </div>
                                 </div>
                                 <div class="col-md-4">

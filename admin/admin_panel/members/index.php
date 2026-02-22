@@ -120,7 +120,7 @@ include_once '../../../includes/admin_topbar.php';
                                         <tr>
                                             <td><?php echo $serial++; ?></td>
                                             <td><strong><?php echo clean($member['member_code']); ?></strong></td>
-                                            <td><?php echo clean($member['first_name'] . ' ' . $member['last_name']); ?></td>
+                                            <td><?php echo clean($member['first_name'] . ' ' . ($member['middle_name'] ?? '') . ' ' . $member['last_name']); ?></td>
                                             <td><?php echo clean($member['phone']); ?></td>
                                             <td><?php echo format_date($member['registration_date']); ?></td>
                                             <td>
@@ -173,7 +173,7 @@ include_once '../../../includes/admin_topbar.php';
                                                     // Show WhatsApp reminder for expired or expiring soon members
                                                     $show_wa = false;
                                                     $wa_message = '';
-                                                    $member_name = clean($member['first_name']);
+                                                    $member_name = clean($member['first_name'] . ' ' . ($member['middle_name'] ?? ''));
                                                     
                                                     if ($member['status'] === 'EXPIRED' && $member['membership_end_date']) {
                                                         $show_wa = true;

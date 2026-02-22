@@ -114,7 +114,7 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
         <div class="photo-box">
             <?php if (!$is_blank && $member['photo_path']): ?>
          <!-- Image support could be added here if path is resolvable -->
-          <img src="<?php echo ASSETS_URL . '/uploads/members/' . clean($member['photo_path']); ?>">
+          <img src="<?php echo ASSETS_URL . '/uploads/members/' . clean($member['photo_path']); ?>" style="width: 96px; height: 116px; object-fit: cover; display: block;">
 
             <?php else: ?>
                 Affix Recent<br>Passport Size<br>Photograph
@@ -128,12 +128,17 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
         <div class="col">
             <div class="box-label">First Name</div>
             <div class="box-value"><?php echo pv($member['first_name'] ?? '', $is_blank); ?></div>
-            <?php if($is_blank) echo str_repeat('_', 30); ?>
+            <?php if($is_blank) echo str_repeat('_', 25); ?>
+        </div>
+        <div class="col">
+            <div class="box-label">Middle Name</div>
+            <div class="box-value"><?php echo pv($member['middle_name'] ?? '', $is_blank); ?></div>
+            <?php if($is_blank) echo str_repeat('_', 25); ?>
         </div>
         <div class="col">
             <div class="box-label">Last Name</div>
             <div class="box-value"><?php echo pv($member['last_name'] ?? '', $is_blank); ?></div>
-            <?php if($is_blank) echo str_repeat('_', 30); ?>
+            <?php if($is_blank) echo str_repeat('_', 25); ?>
         </div>
     </div>
     
@@ -230,6 +235,7 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
     <div style="font-size: 9pt; text-align: justify; margin-bottom: 20px;">
         This is to certify that 
         <?php echo (!$is_blank && !empty($member['first_name'])) ? clean($member['first_name']) : '__________'; ?> 
+        <?php echo (!$is_blank && !empty($member['middle_name'])) ? clean($member['middle_name']) : ''; ?> 
         <?php echo (!$is_blank && !empty($member['last_name'])) ? clean($member['last_name']) : '__________'; ?> 
         is physically fit to undertake swimming activities. He/She is also free from skin diseases and is not suffering from any infectious disease/infection.
 

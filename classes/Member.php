@@ -95,16 +95,17 @@ class Member {
         
         // Insert member
         $query = "INSERT INTO members (
-                    member_code, first_name, last_name, email, phone, alternate_phone,
+                    member_code, first_name, middle_name, last_name, email, phone, alternate_phone,
                     date_of_birth, gender, address_line1, address_line2, city, state, pincode,
                     id_proof_type, id_proof_number, emergency_contact_name, 
                     emergency_contact_phone, emergency_contact_relation, blood_group,
                     medical_conditions, status, registration_date, remarks, created_by
-                  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
-        $result = db_query($query, 'sssssssssssssssssssssssi', [
+        $result = db_query($query, 'ssssssssssssssssssssssssi', [
             $member_code,
             $data['first_name'],
+            $data['middle_name'] ?? null,
             $data['last_name'],
             $data['email'] ?? null,
             sanitize_phone($data['phone']),
@@ -146,7 +147,7 @@ class Member {
             
             log_activity('MEMBER_CREATED', 'members', $member_id, null, [
                 'member_code' => $member_code,
-                'name' => $data['first_name'] . ' ' . $data['last_name']
+                'name' => $data['first_name'] . ' ' . ($data['middle_name'] ?? '') . ' ' . $data['last_name']
             ]);
             
             return [
@@ -272,7 +273,7 @@ class Member {
         }
         
         $query = "UPDATE members SET
-                  first_name = ?, last_name = ?, email = ?, phone = ?, alternate_phone = ?,
+                  first_name = ?, middle_name = ?, last_name = ?, email = ?, phone = ?, alternate_phone = ?,
                   date_of_birth = ?, gender = ?, address_line1 = ?, address_line2 = ?,
                   city = ?, state = ?, pincode = ?, id_proof_type = ?, id_proof_number = ?,
                   emergency_contact_name = ?, emergency_contact_phone = ?, 
@@ -280,8 +281,9 @@ class Member {
                   remarks = ?
                   WHERE member_id = ?";
         
-        $result = db_query($query, 'ssssssssssssssssssssi', [
+        $result = db_query($query, 'sssssssssssssssssssssi', [
             $data['first_name'],
+            $data['middle_name'] ?? null,
             $data['last_name'],
             $data['email'] ?? null,
             sanitize_phone($data['phone']),

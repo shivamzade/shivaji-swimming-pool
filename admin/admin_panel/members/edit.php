@@ -54,7 +54,7 @@ include_once '../../../includes/admin_topbar.php';
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <i class="icon-pencil"></i> Edit Member: <?php echo clean($member['first_name'] . ' ' . $member['last_name']); ?> (<?php echo clean($member['member_code']); ?>)
+                        <i class="icon-pencil"></i> Edit Member: <?php echo clean($member['first_name'] . ' ' . ($member['middle_name'] ?? '') . ' ' . $member['last_name']); ?> (<?php echo clean($member['member_code']); ?>)
                     </div>
                     <div class="card-body">
                         
@@ -67,19 +67,25 @@ include_once '../../../includes/admin_topbar.php';
                             <!-- Personal Information -->
                             <h5 class="border-bottom pb-2 mb-3">Personal Information</h5>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>First Name <span class="text-danger">*</span></label>
                                         <input type="text" name="first_name" class="form-control" value="<?php echo clean($member['first_name']); ?>" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Middle Name</label>
+                                        <input type="text" name="middle_name" class="form-control" value="<?php echo clean($member['middle_name'] ?? ''); ?>" placeholder="Optional">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Last Name <span class="text-danger">*</span></label>
                                         <input type="text" name="last_name" class="form-control" value="<?php echo clean($member['last_name']); ?>" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Gender <span class="text-danger">*</span></label>
                                         <select name="gender" class="form-control" required>
