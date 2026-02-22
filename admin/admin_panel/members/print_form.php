@@ -18,6 +18,14 @@ $member = null;
 
 if ($member_id) {
     $member = Member::get_by_id($member_id);
+    if ($member) {
+        $batch_obj = new Batch($conn);
+        $member_batches = $batch_obj->getMemberBatches($member_id);
+        if (!empty($member_batches)) {
+            $b = $member_batches[0];
+            $member['batch_display'] =  date('h:i A', strtotime($b['start_time'])) . ' - ' . date('h:i A', strtotime($b['end_time']));
+        }
+    }
 }
 
 // Helper to print value or dots/space
@@ -97,8 +105,10 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
             <?php if (!$is_blank): ?>
                 <div style="margin-bottom: 10px;"><strong>Member Code:</strong> <?php echo pv($member['member_code'], false); ?></div>
                 <div><strong>Reg. Date:</strong> <?php echo format_date($member['registration_date']); ?></div>
+                <div><strong>Batch:</strong> <?php echo pv($member['batch_display'] ?? 'N/A', false); ?></div>
             <?php else: ?>
                 <div style="margin-bottom: 10px;"><strong>Date:</strong> _____________________</div>
+                <div style="margin-bottom: 10px;"><strong>Batch:</strong> _____________________</div>
             <?php endif; ?>
         </div>
         <div class="photo-box">
@@ -213,20 +223,8 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
             <?php if($is_blank) echo str_repeat('_', 25); ?>
         </div>
     </div>
-    
-   
-    
-    <div class="section-header" style="background-color: #f9f9f9; margin-top: 25px;">For Office Use Only</div>
-    
-    <table class="office-use">
-        <tr>
-            <td width="30%"><strong>Membership Type:</strong><br><br>□ Daily □ Monthly □ Quarterly □ Yearly</td>
-            <td width="30%"><strong>Payment Details:</strong><br><br>Amount: ___________  <br>Receipt No: ___________</td>
-            <td width="40%"><strong>Validity:</strong><br><br>From: _______________ To: _______________</td>
-        </tr>
-    </table>
 
-     <div class="section-header"> Medical Certificate</div>
+      <div class="section-header"> Medical Certificate</div>
     
     <div style="font-size: 9pt; text-align: justify; margin-bottom: 20px;">
         This is to certify that 
@@ -246,6 +244,12 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
         </div>
       
     </div>
+    
+   
+    
+
+
+   
 
      <div class="section-header"> Declaration</div>
     
@@ -265,6 +269,16 @@ $title = $is_blank ? 'New Membership Registration Form' : 'Member Registration R
             Signature of Applicant
         </div>
     </div>
+
+        <div class="section-header" style="background-color: #f9f9f9; margin-top: 25px;">For Office Use Only</div>
+    
+    <table class="office-use">
+        <tr>
+            <td width="30%"><strong>Membership Type:</strong><br><br>□ Daily □ Monthly □ Quarterly □ Yearly</td>
+            <td width="30%"><strong>Payment Details:</strong><br><br>Amount: ___________  <br>Receipt No: ___________</td>
+            <td width="40%"><strong>Validity:</strong><br><br>From: _______________ To: _______________</td>
+        </tr>
+    </table>
 
 </body>
 </html>

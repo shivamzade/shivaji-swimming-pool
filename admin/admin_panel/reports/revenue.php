@@ -20,17 +20,68 @@ if (!has_role([1, 2])) {
 $page_title = 'Revenue Report';
 
 // Get filter parameters
-$month = isset($_GET['month']) ? intval($_GET['month']) : date('m');
-$year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
+$start_date = $_GET['start_date'] ?? '';
+$end_date = $_GET['end_date'] ?? '';
+$payment_method = $_GET['payment_method'] ?? '';
+$plan_type = $_GET['plan_type'] ?? '';
+$search = $_GET['search'] ?? '';
 
-// Get monthly data
-$query = "SELECT p.*, m.first_name, m.last_name, m.member_code
+// Fallback to current month if no date range is provided
+if (empty($start_date) && empty($end_date)) {
+    $month = isset($_GET['month']) ? intval($_GET['month']) : date('m');
+    $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
+    $start_date = "$year-" . str_pad($month, 2, '0', STR_PAD_LEFT) . "-01";
+    $end_date = date("Y-m-t", strtotime($start_date));
+}
+
+// Build query
+$query = "SELECT p.*, m.first_name, m.last_name, m.member_code, mp.plan_name, mp.plan_type
           FROM payments p
           JOIN members m ON p.member_id = m.member_id
-          WHERE MONTH(p.payment_date) = ? AND YEAR(p.payment_date) = ?
-          ORDER BY p.payment_date ASC";
+          LEFT JOIN member_memberships mm ON p.payment_id = mm.payment_id
+          LEFT JOIN membership_plans mp ON mm.plan_id = mp.plan_id
+          WHERE 1=1";
 
-$transactions = db_fetch_all($query, 'ii', [$month, $year]);
+$params = [];
+$types = "";
+
+if (!empty($start_date)) {
+    $query .= " AND p.payment_date >= ?";
+    $params[] = $start_date;
+    $types .= "s";
+}
+
+if (!empty($end_date)) {
+    $query .= " AND p.payment_date <= ?";
+    $params[] = $end_date;
+    $types .= "s";
+}
+
+if (!empty($payment_method)) {
+    $query .= " AND p.payment_method = ?";
+    $params[] = $payment_method;
+    $types .= "s";
+}
+
+if (!empty($plan_type)) {
+    $query .= " AND mp.plan_type = ?";
+    $params[] = $plan_type;
+    $types .= "s";
+}
+
+if (!empty($search)) {
+    $query .= " AND (m.first_name LIKE ? OR m.last_name LIKE ? OR m.member_code LIKE ? OR p.receipt_number LIKE ?)";
+    $search_term = "%$search%";
+    $params[] = $search_term;
+    $params[] = $search_term;
+    $params[] = $search_term;
+    $params[] = $search_term;
+    $types .= "ssss";
+}
+
+$query .= " ORDER BY p.payment_date ASC";
+
+$transactions = db_fetch_all($query, $types, $params);
 
 // Calculate totals
 $total_revenue = 0;
@@ -45,7 +96,7 @@ $mode_breakdown = [
 
 foreach ($transactions as $t) {
     $total_revenue += $t['amount'];
-    $mode = $t['payment_method'] ?? $t['payment_mode'] ?? 'UNKNOWN';
+    $mode = $t['payment_method'] ?? 'UNKNOWN';
     if (isset($mode_breakdown[$mode])) {
         $mode_breakdown[$mode] += $t['amount'];
     }
@@ -79,26 +130,72 @@ include_once '../../../includes/admin_topbar.php';
                 <div class="card">
                     <div class="card-header bg-dark text-white">
                         <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <h5 class="mb-0"><i class="icon-chart"></i> Revenue Report: <?php echo date('F', mktime(0, 0, 0, $month, 10)) . ' ' . $year; ?></h5>
+                            <div class="col-md-4">
+                                <h5 class="mb-0"><i class="icon-chart"></i> Revenue Report</h5>
+                                <small class="text-white-50">
+                                    <?php 
+                                    if (!empty($_GET['start_date']) || !empty($_GET['end_date'])) {
+                                        echo "From: " . format_date($start_date) . " To: " . format_date($end_date);
+                                    } else {
+                                        echo date('F', mktime(0, 0, 0, $month, 10)) . ' ' . $year;
+                                    }
+                                    ?>
+                                </small>
                             </div>
-                            <div class="col-md-6 text-right d-print-none">
+                            <div class="col-md-8 text-right d-print-none">
                                 <form method="GET" class="form-inline justify-content-end">
-                                    <select name="month" class="form-control form-control-sm mr-2">
-                                        <?php for($i=1; $i<=12; $i++): ?>
-                                            <option value="<?php echo $i; ?>" <?php echo $i == $month ? 'selected' : ''; ?>><?php echo date('F', mktime(0, 0, 0, $i, 10)); ?></option>
-                                        <?php endfor; ?>
-                                    </select>
-                                    <select name="year" class="form-control form-control-sm mr-2">
-                                        <?php for($i=date('Y'); $i>=2023; $i--): ?>
-                                            <option value="<?php echo $i; ?>" <?php echo $i == $year ? 'selected' : ''; ?>><?php echo $i; ?></option>
-                                        <?php endfor; ?>
-                                    </select>
+                                    <div class="input-group input-group-sm mr-2" title="Start Date">
+                                        <div class="input-group-prepend"><span class="input-group-text">From</span></div>
+                                        <input type="date" name="start_date" class="form-control" value="<?php echo $_GET['start_date'] ?? ($start_date ?? ''); ?>">
+                                    </div>
+                                    <div class="input-group input-group-sm mr-2" title="End Date">
+                                        <div class="input-group-prepend"><span class="input-group-text">To</span></div>
+                                        <input type="date" name="end_date" class="form-control" value="<?php echo $_GET['end_date'] ?? ($end_date ?? ''); ?>">
+                                    </div>
                                     <button type="submit" class="btn btn-sm btn-light">Filter</button>
+                                    <a href="revenue.php" class="btn btn-sm btn-outline-light ml-1" title="Reset Filters"><i class="icon-refresh"></i></a>
                                     <button onclick="window.print()" class="btn btn-sm btn-light ml-1"><i class="icon-printer"></i></button>
                                 </form>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- Advanced Filters Bar -->
+                    <div class="card-body bg-light border-bottom d-print-none">
+                        <form method="GET" class="row">
+                            <!-- Preserve date filters if they were set via the header form -->
+                            <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?? ''; ?>">
+                            <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?? ''; ?>">
+                            
+                            <div class="col-md-3 mt-2">
+                                <label class="small font-weight-bold">Payment Method</label>
+                                <select name="payment_method" class="form-control form-control-sm">
+                                    <option value="">All Methods</option>
+                                    <?php foreach (array_keys($mode_breakdown) as $mode): ?>
+                                        <option value="<?php echo $mode; ?>" <?php echo $payment_method == $mode ? 'selected' : ''; ?>><?php echo $mode; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <label class="small font-weight-bold">Plan Type</label>
+                                <select name="plan_type" class="form-control form-control-sm">
+                                    <option value="">All Types</option>
+                                    <option value="DAILY" <?php echo $plan_type == 'DAILY' ? 'selected' : ''; ?>>Daily</option>
+                                    <option value="MONTHLY" <?php echo $plan_type == 'MONTHLY' ? 'selected' : ''; ?>>Monthly</option>
+                                    <option value="QUARTERLY" <?php echo $plan_type == 'QUARTERLY' ? 'selected' : ''; ?>>Quarterly</option>
+                                    <option value="HALF_YEARLY" <?php echo $plan_type == 'HALF_YEARLY' ? 'selected' : ''; ?>>Half Yearly</option>
+                                    <option value="YEARLY" <?php echo $plan_type == 'YEARLY' ? 'selected' : ''; ?>>Yearly</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mt-2">
+                                <label class="small font-weight-bold">Search Member/Receipt</label>
+                                <input type="text" name="search" class="form-control form-control-sm" placeholder="Name, code or receipt..." value="<?php echo clean($search); ?>">
+                            </div>
+                            <div class="col-md-2 mt-2">
+                                <label class="small d-block">&nbsp;</label>
+                                <button type="submit" class="btn btn-sm btn-primary btn-block">Apply Filters</button>
+                            </div>
+                        </form>
                     </div>
                     <div class="card-body">
                         
@@ -142,6 +239,7 @@ include_once '../../../includes/admin_topbar.php';
                                                 <th>Date</th>
                                                 <th>Receipt #</th>
                                                 <th>Member</th>
+                                                <th>Plan</th>
                                                 <th>Mode</th>
                                                 <th>Amount</th>
                                             </tr>
@@ -154,13 +252,26 @@ include_once '../../../includes/admin_topbar.php';
                                                     <tr>
                                                         <td><?php echo format_date($t['payment_date']); ?></td>
                                                         <td><small><?php echo clean($t['receipt_number']); ?></small></td>
-                                                        <td><?php echo clean($t['first_name'] . ' ' . $t['last_name']); ?></td>
-                                                        <td><span class="badge badge-light"><?php echo clean($t['payment_method'] ?? $t['payment_mode'] ?? 'N/A'); ?></span></td>
+                                                        <td>
+                                                            <div><?php echo clean($t['first_name'] . ' ' . $t['last_name']); ?></div>
+                                                            <small class="text-muted"><?php echo clean($t['member_code']); ?></small>
+                                                        </td>
+                                                        <td>
+                                                            <?php if ($t['plan_name']): ?>
+                                                                <small class="d-block text-truncate" style="max-width: 120px;" title="<?php echo clean($t['plan_name']); ?>">
+                                                                    <?php echo clean($t['plan_name']); ?>
+                                                                </small>
+                                                                <span class="badge badge-info" style="font-size: 70%;"><?php echo clean($t['plan_type']); ?></span>
+                                                            <?php else: ?>
+                                                                <span class="text-muted small">N/A</span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td><span class="badge badge-light"><?php echo clean($t['payment_method'] ?? 'N/A'); ?></span></td>
                                                         <td class="text-right"><strong><?php echo format_currency($t['amount']); ?></strong></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                                 <tr class="bg-light font-weight-bold">
-                                                    <td colspan="4" class="text-right">Total Monthly Revenue</td>
+                                                    <td colspan="5" class="text-right">Total Revenue</td>
                                                     <td class="text-right text-primary"><?php echo format_currency($total_revenue); ?></td>
                                                 </tr>
                                             <?php endif; ?>

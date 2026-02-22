@@ -53,7 +53,7 @@ function is_section_active($section, $current_section) {
             <ul class="sidebar-submenu" <?php echo is_section_active('members', $current_section) ? 'style="display: block;"' : ''; ?>>
                 <li class="<?php echo ($current_section === 'members' && $current_page === 'index') ? 'active' : ''; ?>"><a href="<?php echo ADMIN_URL; ?>/members/index.php"><i class="fa fa-circle-o"></i> All Members</a></li>
                 <li class="<?php echo ($current_section === 'members' && $current_page === 'add') ? 'active' : ''; ?>"><a href="<?php echo ADMIN_URL; ?>/members/add.php"><i class="fa fa-circle-o"></i> Add Member</a></li>
-                <li class="<?php echo ($current_section === 'members' && $current_page === 'renew') ? 'active' : ''; ?>"><a href="<?php echo ADMIN_URL; ?>/members/renew.php"><i class="fa fa-circle-o"></i> Renew Membership</a></li>
+                <!-- <li class="<?php echo ($current_section === 'members' && $current_page === 'renew') ? 'active' : ''; ?>"><a href="<?php echo ADMIN_URL; ?>/members/renew.php"><i class="fa fa-circle-o"></i> Renew Membership</a></li> -->
             </ul>
         </li>
         

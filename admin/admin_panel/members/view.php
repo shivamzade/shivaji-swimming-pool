@@ -26,6 +26,29 @@ if (!$member) {
     redirect(ADMIN_URL . '/members/index.php');
 }
 
+// Handle photo upload
+if (is_post_request() && isset($_FILES['member_photo'])) {
+    require_csrf_token();
+    
+    $upload = upload_file($_FILES['member_photo'], UPLOAD_PATH . '/members', ALLOWED_IMAGE_TYPES);
+    
+    if ($upload['success']) {
+        // Delete old photo if exists
+        if (!empty($member['photo_path'])) {
+            delete_file(UPLOAD_PATH . '/members/' . $member['photo_path']);
+        }
+        
+        // Update DB
+        $update_query = "UPDATE members SET photo_path = ? WHERE member_id = ?";
+        db_query($update_query, 'si', [$upload['file'], $member_id]);
+        
+        set_flash('success', 'Profile photo updated successfully!');
+        redirect(ADMIN_URL . '/members/view.php?id=' . $member_id);
+    } else {
+        set_flash('error', 'Upload failed: ' . $upload['error']);
+    }
+}
+
 // Set page title
 $page_title = 'Member Profile: ' . $member['first_name'] . ' ' . $member['last_name'];
 
@@ -43,9 +66,27 @@ include_once '../../../includes/admin_topbar.php';
             <div class="col-lg-4">
                 <div class="card profile-card-2">
                     <div class="card-img-block text-center pt-4">
-                        <div class="avatar-wrapper rounded-circle bg-light d-inline-block shadow-sm" style="width: 150px; height: 150px; line-height: 150px;">
-                            <i class="icon-user fa-5x text-secondary" style="vertical-align: middle;"></i>
+                        <div class="avatar-wrapper rounded-circle bg-light d-inline-block shadow-sm overflow-hidden" 
+                             style="width: 150px; height: 150px; line-height: 150px; position: relative;">
+                            <?php if (!empty($member['photo_path'])): ?>
+                                <img src="<?php echo ASSETS_URL . '/uploads/members/' . clean($member['photo_path']); ?>" 
+                                     alt="Profile Photo" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                            <?php else: ?>
+                                <i class="icon-user fa-5x text-secondary" style="vertical-align: middle;"></i>
+                            <?php endif; ?>
                         </div>
+                        
+                        <!-- Upload Form -->
+                        <form action="" method="POST" enctype="multipart/form-data" class="mt-2 d-print-none">
+                            <?php echo csrf_token_field(); ?>
+                            <label class="btn btn-xs btn-outline-primary mb-0" style="cursor: pointer;">
+                                <i class="icon-camera"></i> Change Photo
+                                <input type="file" name="member_photo" onchange="this.form.submit()" style="display: none;" accept="image/*">
+                            </label>
+                            <?php if (!empty($member['photo_path'])): ?>
+                                <!-- Future option: Remove Photo could be added here -->
+                            <?php endif; ?>
+                        </form>
                     </div>
                     <div class="card-body pt-3 text-center">
                         <h5 class="card-title"><?php echo clean($member['first_name'] . ' ' . $member['last_name']); ?></h5>
