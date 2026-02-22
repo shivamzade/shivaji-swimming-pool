@@ -136,3 +136,16 @@
 
 })(jQuery);
 
+// Video Toggle Function (Global)
+function toggleVideo() {
+    var video = document.getElementById('heroVideo');
+    var icon = document.getElementById('videoPlayPauseIcon');
+    
+    if (video.paused) {
+        video.play();
+        icon.className = 'fa fa-pause';
+    } else {
+        video.pause();
+        icon.className = 'fa fa-play';
+    }
+}

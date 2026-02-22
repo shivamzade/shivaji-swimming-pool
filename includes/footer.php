@@ -11,15 +11,15 @@
                             <p class="mb-2">Dedicated to excellence in swimming coaching and water safety since 1995.</p>
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-map-marker-alt text-primary me-3"></i>
-                                <p class="text-white mb-0">Shivaji Park, Dadar West, Mumbai, Maharashtra 400028</p>
+                                <p class="text-white mb-0">Rajeshwar Colony, Old, Main Rd, behind Gajanan Bakery, Vyankatesh Nagar, Alasana, Shegaon, Maharashtra 444203</p>
                             </div>
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-envelope text-primary me-3"></i>
-                                <p class="text-white mb-0">info@shivajipool.com</p>
+                                <p class="text-white mb-0">info@shivajiswims.com</p>
                             </div>
                             <div class="d-flex align-items-center">
                                 <i class="fa fa-phone-alt text-primary me-3"></i>
-                                <p class="text-white mb-0">+91 22 1234 5678</p>
+                                <p class="text-white mb-0">092265 85968</p>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i><?php echo POOL_NAME; ?></a>, All right reserved.</span>
                     </div>
                     <div class="col-md-6 text-center text-md-end text-body">
-                        Designed By <a class="border-bottom text-white" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a class="border-bottom text-white" href="https://themewagon.com">ThemeWagon</a>
+                        Designed and Developed By <a class="border-bottom text-white" href="https://www.shivajiswims.com"><?php echo POOL_NAME; ?></a>
                     </div>
                 </div>
             </div>

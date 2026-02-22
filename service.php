@@ -65,18 +65,18 @@ require_once 'config/config.php';
         <div class="container-fluid service py-5" style="margin-top: 100px;">
             <div class="container service-section py-5">
                 <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
-                    <h4 class="text-primary">Our Service</h4>
-                    <h1 class="display-5 text-white mb-4">Professional Swimming Services</h1>
-                    <p class="mb-0 text-white">We offer a wide range of services tailored to meet the needs of every swimmer, from beginners to advanced professionals.
+                    <h4 class="text-primary">Our Services</h4>
+                    <h1 class="display-5 text-white mb-4">Comprehensive Swimming Services</h1>
+                    <p class="mb-0 text-white">We offer professional swimming training, recreational swimming, and water fitness programs for all age groups and skill levels at Shivaji Swimming Pool in Shegaon.
                     </p>
                 </div>
                 <div class="row g-4">
                     <div class="col-0 col-md-1 col-lg-2 col-xl-2"></div>
                     <div class="col-md-10 col-lg-8 col-xl-8 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="service-days p-4">
-                            <div class="py-2 border-bottom border-top d-flex align-items-center justify-content-between flex-wrap"><h4 class="mb-0 pb-2 pb-sm-0">Monday - Friday</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>11:00 AM - 16:00 PM</p></div>
-                            <div class="py-2 border-bottom d-flex align-items-center justify-content-between flex-shrink-1 flex-wrap"><h4 class="mb-0 pb-2 pb-sm-0">Saturday - Sunday</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>09:00 AM - 17:00 PM</p></div>
-                            <div class="py-2 border-bottom d-flex align-items-center justify-content-between flex-shrink-1 flex-wrap"><h4 class="mb-0">Holiday</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>09:00 AM - 17:00 PM</p></div>
+                            <div class="py-2 border-bottom border-top d-flex align-items-center justify-content-between flex-wrap"><h4 class="mb-0 pb-2 pb-sm-0">Morning Sessions</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>06:00 AM - 10:00 AM</p></div>
+                            <div class="py-2 border-bottom d-flex align-items-center justify-content-between flex-shrink-1 flex-wrap"><h4 class="mb-0 pb-2 pb-sm-0">Evening Sessions</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>04:00 PM - 09:00 PM</p></div>
+                            <div class="py-2 border-bottom d-flex align-items-center justify-content-between flex-shrink-1 flex-wrap"><h4 class="mb-0">Weekend Special</h4> <p class="mb-0"><i class="fas fa-clock text-primary me-2"></i>06:00 AM - 09:00 PM</p></div>
                         </div>
                     </div>
                     <div class="col-0 col-md-1 col-lg-2 col-xl-2"></div>
@@ -85,10 +85,10 @@ require_once 'config/config.php';
                         <div class="service-item p-4">
                             <div class="service-content">
                                 <div class="mb-4">
-                                    <i class="fas fa-home fa-4x"></i>
+                                    <i class="fas fa-swimmer fa-4x"></i>
                                 </div>
-                                <a href="#" class="h4 d-inline-block mb-3">Private Gazebo</a>
-                                <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.
+                                <a href="#" class="h4 d-inline-block mb-3">Swimming Training</a>
+                                <p class="mb-0">Professional coaching for beginners, intermediate and advanced swimmers with personalized training plans.
                                 </p>
                             </div>
                         </div>
@@ -97,10 +97,10 @@ require_once 'config/config.php';
                         <div class="service-item p-4">
                             <div class="service-content">
                                 <div class="mb-4">
-                                    <i class="fas fa-utensils fa-4x"></i>
+                                    <i class="fas fa-dumbbell fa-4x"></i>
                                 </div>
-                                <a href="#" class="h4 d-inline-block mb-3">Delicious Food</a>
-                                <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.
+                                <a href="#" class="h4 d-inline-block mb-3">Aqua Fitness</a>
+                                <p class="mb-0">Water aerobics and aqua fitness classes for a full-body workout that's easy on the joints.
                                 </p>
                             </div>
                         </div>
@@ -109,10 +109,10 @@ require_once 'config/config.php';
                         <div class="service-item p-4">
                             <div class="service-content">
                                 <div class="mb-4">
-                                    <i class="fas fa-door-closed fa-4x"></i>
+                                    <i class="fas fa-child fa-4x"></i>
                                 </div>
-                                <a href="#" class="h4 d-inline-block mb-3">Safety Lockers</a>
-                                <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.
+                                <a href="#" class="h4 d-inline-block mb-3">Kids Swimming</a>
+                                <p class="mb-0">Special swimming programs for children in a fun, safe environment with experienced instructors.
                                 </p>
                             </div>
                         </div>
@@ -121,10 +121,10 @@ require_once 'config/config.php';
                         <div class="service-item p-4">
                             <div class="service-content">
                                 <div class="mb-4">
-                                    <i class="fas fa-swimming-pool fa-4x"></i>
+                                    <i class="fas fa-life-ring fa-4x"></i>
                                 </div>
-                                <a href="#" class="h4 d-inline-block mb-3">River Rides</a>
-                                <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet vel beatae numquam.
+                                <a href="#" class="h4 d-inline-block mb-3">Safety Training</a>
+                                <p class="mb-0">Water safety and lifesaving skills training for swimmers of all levels.
                                 </p>
                             </div>
                         </div>
@@ -140,11 +140,11 @@ require_once 'config/config.php';
                 <div class="row g-4">
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="feature-item">
-                            <img src="img/feature-1.jpg" class="img-fluid rounded w-100" alt="Image">
+                            <img src="img/feature-1.jpg" class="img-fluid rounded w-100" alt="Olympic Pool">
                             <div class="feature-content p-4">
                                 <div class="feature-content-inner">
-                                    <h4 class="text-white">Best Pools</h4>
-                                    <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis porro soluta voluptatum laborum mollitia blanditiis suscipit,
+                                    <h4 class="text-white">Olympic Pool</h4>
+                                    <p class="text-white">50-meter Olympic-size pool for training and recreation.
                                     </p>
                                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fa fa-arrow-right ms-1"></i></a>
                                 </div>
@@ -154,11 +154,11 @@ require_once 'config/config.php';
                     </div>
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.4s">
                         <div class="feature-item">
-                            <img src="img/feature-2.jpg" class="img-fluid rounded w-100" alt="Image">
+                            <img src="img/feature-2.jpg" class="img-fluid rounded w-100" alt="Training">
                             <div class="feature-content p-4">
                                 <div class="feature-content-inner">
-                                    <h4 class="text-white">Waterslides</h4>
-                                    <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis porro soluta voluptatum laborum mollitia blanditiis suscipit,
+                                    <h4 class="text-white">Expert Training</h4>
+                                    <p class="text-white">Certified coaches for all skill levels.
                                     </p>
                                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fa fa-arrow-right ms-1"></i></a>
                                 </div>
@@ -168,11 +168,11 @@ require_once 'config/config.php';
                     </div>
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.6s">
                         <div class="feature-item">
-                            <img src="img/feature-3.jpg" class="img-fluid rounded w-100" alt="Image">
+                            <img src="img/feature-3.jpg" class="img-fluid rounded w-100" alt="Safety">
                             <div class="feature-content p-4">
                                 <div class="feature-content-inner">
-                                    <h4 class="text-white">River Rides</h4>
-                                    <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis porro soluta voluptatum laborum mollitia blanditiis suscipit,
+                                    <h4 class="text-white">Safety First</h4>
+                                    <p class="text-white">Certified lifeguards and modern safety equipment.
                                     </p>
                                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fa fa-arrow-right ms-1"></i></a>
                                 </div>
@@ -190,8 +190,8 @@ require_once 'config/config.php';
             <div class="container py-5">
                 <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
                     <h4 class="text-primary">Testimonials</h4>
-                    <h1 class="display-5 text-white mb-4">Our Clients Riviews</h1>
-                    <p class="text-white mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
+                    <h1 class="display-5 text-white mb-4">What Our Members Say</h1>
+                    <p class="text-white mb-0">Hear from our happy members about their swimming journey at Shivaji Swimming Pool in Shegaon.
                     </p>
                 </div>
                 <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.2s">

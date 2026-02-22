@@ -32,7 +32,7 @@
                     <div class="team-icon d-none d-xl-flex justify-content-center me-3">
                         <a class="btn btn-square btn-light rounded-circle mx-1" href=""><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-square btn-light rounded-circle mx-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-light rounded-circle mx-1" href=""><i class="fab fa-instagram"></i></a>
+                        <a class="btn btn-square btn-light rounded-circle mx-1" href="https://www.instagram.com/its_shivajis_pool/"><i class="fab fa-instagram"></i></a>
                         <a class="btn btn-square btn-light rounded-circle mx-1" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4 flex-shrink-0">Get Started</a>

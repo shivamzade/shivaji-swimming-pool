@@ -8,8 +8,8 @@ require_once 'config/config.php';
         <meta charset="utf-8">
         <title>About Us - <?php echo POOL_NAME; ?></title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="about shivaji pool, swimming history mumbai, swimming coaching about" name="keywords">
-        <meta content="Learn about our journey and commitment to swimming excellence at Shivaji Swimming Pool." name="description">
+        <meta content="about shivaji pool, swimming history shegaon, swimming coaching about, shegaon swimming pool" name="keywords">
+        <meta content="Learn about Shivaji Swimming Pool's journey and commitment to swimming excellence in Shegaon, Maharashtra." name="description">
 
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,25 +68,25 @@ require_once 'config/config.php';
                     <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.2s">
                         <div>
                             <h4 class="text-primary">About <?php echo POOL_NAME; ?></h4>
-                            <h1 class="display-5 mb-4">The Best Swimming Destination For Your Family</h1>
-                            <p class="mb-5">Shivaji Swimming Pool has been a cornerstone of the community for over two decades. We pride ourselves on providing top-tier facilities and expert coaching for all ages.
+                            <h1 class="display-5 mb-4">Your Trusted Swimming Destination in Shegaon</h1>
+                            <p class="mb-5">Shivaji Swimming Pool has been a cornerstone of the Shegaon community for over two decades. Located in the heart of Shegaon, Maharashtra, we pride ourselves on providing top-tier swimming facilities and expert coaching for all ages and skill levels.
                             </p>
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <div class="d-flex">
-                                        <div class="me-3"><i class="fas fa-glass-cheers fa-3x text-primary"></i></div>
+                                        <div class="me-3"><i class="fas fa-swimmer fa-3x text-primary"></i></div>
                                         <div>
-                                            <h4>Food & Drinks</h4>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                            <h4>Expert Coaching</h4>
+                                            <p>Certified trainers with years of experience training swimmers of all levels.</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="d-flex">
-                                        <div class="me-3"><i class="fas fa-dot-circle fa-3x text-primary"></i></div>
+                                        <div class="me-3"><i class="fas fa-shield-alt fa-3x text-primary"></i></div>
                                         <div>
-                                            <h4>Many Attractions</h4>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                            <h4>Safety First</h4>
+                                            <p>Full safety protocols with certified lifeguards on duty at all times.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -94,8 +94,8 @@ require_once 'config/config.php';
                                     <div class="d-flex">
                                         <div class="me-3"><i class="fas fa-hand-holding-usd fa-3x text-primary"></i></div>
                                         <div>
-                                            <h4>Affordable Price</h4>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                            <h4>Affordable Pricing</h4>
+                                            <p>Flexible membership options to suit individuals, families, and students.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -103,8 +103,8 @@ require_once 'config/config.php';
                                     <div class="d-flex">
                                         <div class="me-3"><i class="fas fa-lock fa-3x text-primary"></i></div>
                                         <div>
-                                            <h4>Safety Lockers</h4>
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                            <h4>Modern Lockers</h4>
+                                            <p>Secure locker rooms with modern amenities for your comfort and safety.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -164,11 +164,11 @@ require_once 'config/config.php';
                 <div class="row g-4">
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="feature-item">
-                            <img src="img/feature-1.jpg" class="img-fluid rounded w-100" alt="Image">
+                            <img src="img/feature-1.jpg" class="img-fluid rounded w-100" alt="Olympic Pool">
                             <div class="feature-content p-4">
                                 <div class="feature-content-inner">
-                                    <h4 class="text-white">Best Pools</h4>
-                                    <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis porro soluta voluptatum laborum mollitia blanditiis suscipit,
+                                    <h4 class="text-white">Olympic-Size Pool</h4>
+                                    <p class="text-white">Our 50-meter Olympic-size swimming pool is perfect for both training and recreational swimming.
                                     </p>
                                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fa fa-arrow-right ms-1"></i></a>
                                 </div>
@@ -178,11 +178,11 @@ require_once 'config/config.php';
                     </div>
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.4s">
                         <div class="feature-item">
-                            <img src="img/feature-2.jpg" class="img-fluid rounded w-100" alt="Image">
+                            <img src="img/feature-2.jpg" class="img-fluid rounded w-100" alt="Swimming Training">
                             <div class="feature-content p-4">
                                 <div class="feature-content-inner">
-                                    <h4 class="text-white">Waterslides</h4>
-                                    <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis porro soluta voluptatum laborum mollitia blanditiis suscipit,
+                                    <h4 class="text-white">Expert Training</h4>
+                                    <p class="text-white">Learn from certified coaches with years of experience training all skill levels.
                                     </p>
                                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fa fa-arrow-right ms-1"></i></a>
                                 </div>
@@ -192,11 +192,11 @@ require_once 'config/config.php';
                     </div>
                     <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.6s">
                         <div class="feature-item">
-                            <img src="img/feature-3.jpg" class="img-fluid rounded w-100" alt="Image">
+                            <img src="img/feature-3.jpg" class="img-fluid rounded w-100" alt="Kids Pool">
                             <div class="feature-content p-4">
                                 <div class="feature-content-inner">
-                                    <h4 class="text-white">River Rides</h4>
-                                    <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis porro soluta voluptatum laborum mollitia blanditiis suscipit,
+                                    <h4 class="text-white">Kids Swimming</h4>
+                                    <p class="text-white">Special swimming programs for children in a fun, safe environment.
                                     </p>
                                     <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More <i class="fa fa-arrow-right ms-1"></i></a>
                                 </div>
@@ -277,8 +277,8 @@ require_once 'config/config.php';
             <div class="container pb-5">
                 <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
                     <h4 class="text-primary">Meet Our Team</h4>
-                    <h1 class="display-5 mb-4">Our Waterland Park Dedicated Team Member</h1>
-                    <p class="mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur adipisci facilis cupiditate recusandae aperiam temporibus corporis itaque quis facere, numquam, ad culpa deserunt sint dolorem autem obcaecati, ipsam mollitia hic.
+                    <h1 class="display-5 mb-4">Our Dedicated Swimming Coaches</h1>
+                    <p class="mb-0">Meet our team of certified swimming instructors and coaches at Shivaji Swimming Pool, dedicated to helping you become a confident swimmer.
                     </p>
                 </div>
                 <div class="row g-4 justify-content-center">
@@ -287,11 +287,11 @@ require_once 'config/config.php';
                             <div class="team-content">
                                 <div class="d-flex justify-content-between border-bottom pb-4">
                                     <div class="text-start">
-                                        <h4 class="mb-0">David James</h4>
-                                        <p class="mb-0">Profession</p>
+                                        <h4 class="mb-0">Shivaji Bajare</h4>
+                                        <p class="mb-0">Director & Head Coach</p>
                                     </div>
                                     <div>
-                                        <img src="img/team-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+                                        <img src="img/team-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="Shivaji Bajare">
                                     </div>
                                 </div>
                                 <div class="team-icon rounded-pill my-4 p-3">
@@ -300,8 +300,7 @@ require_once 'config/config.php';
                                     <a class="btn btn-primary btn-sm-square rounded-circle me-3" href=""><i class="fab fa-linkedin-in"></i></a>
                                     <a class="btn btn-primary btn-sm-square rounded-circle me-0" href=""><i class="fab fa-instagram"></i></a>
                                 </div>
-                                <p class="text-center mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, quibusdam eveniet itaque provident sequi deserunt.
-                                </p>
+                                <p class="text-center mb-0">Founder and Director of Shivaji Swimming Pool with over 20 years of experience in swimming coaching and management.</p>
                             </div>
                         </div>
                     </div>
@@ -310,11 +309,11 @@ require_once 'config/config.php';
                             <div class="team-content">
                                 <div class="d-flex justify-content-between border-bottom pb-4">
                                     <div class="text-start">
-                                        <h4 class="mb-0">William John</h4>
-                                        <p class="mb-0">Profession</p>
+                                        <h4 class="mb-0">Amit Bajare</h4>
+                                        <p class="mb-0">Senior Coach</p>
                                     </div>
                                     <div>
-                                        <img src="img/team-2.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+                                        <img src="img/team-2.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="Amit Bajare">
                                     </div>
                                 </div>
                                 <div class="team-icon rounded-pill my-4 p-3">
@@ -323,8 +322,7 @@ require_once 'config/config.php';
                                     <a class="btn btn-primary btn-sm-square rounded-circle me-3" href=""><i class="fab fa-linkedin-in"></i></a>
                                     <a class="btn btn-primary btn-sm-square rounded-circle me-0" href=""><i class="fab fa-instagram"></i></a>
                                 </div>
-                                <p class="text-center mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, quibusdam eveniet itaque provident sequi deserunt.
-                                </p>
+                                <p class="text-center mb-0">Certified senior swimming coach specializing in competitive swimming training and advanced techniques.</p>
                             </div>
                         </div>
                     </div>
@@ -333,11 +331,11 @@ require_once 'config/config.php';
                             <div class="team-content">
                                 <div class="d-flex justify-content-between border-bottom pb-4">
                                     <div class="text-start">
-                                        <h4 class="mb-0">Michael John</h4>
-                                        <p class="mb-0">Profession</p>
+                                        <h4 class="mb-0">Priya Sharma</h4>
+                                        <p class="mb-0">Kids Swimming Coach</p>
                                     </div>
                                     <div>
-                                        <img src="img/team-3.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
+                                        <img src="img/team-3.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="Priya Sharma">
                                     </div>
                                 </div>
                                 <div class="team-icon rounded-pill my-4 p-3">
@@ -346,8 +344,7 @@ require_once 'config/config.php';
                                     <a class="btn btn-primary btn-sm-square rounded-circle me-3" href=""><i class="fab fa-linkedin-in"></i></a>
                                     <a class="btn btn-primary btn-sm-square rounded-circle me-0" href=""><i class="fab fa-instagram"></i></a>
                                 </div>
-                                <p class="text-center mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, quibusdam eveniet itaque provident sequi deserunt.
-                                </p>
+                                <p class="text-center mb-0">Specialized kids swimming instructor with expertise in making swimming fun and safe for young learners.</p>
                             </div>
                         </div>
                     </div>

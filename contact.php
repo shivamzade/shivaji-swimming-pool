@@ -8,8 +8,8 @@ require_once 'config/config.php';
         <meta charset="utf-8">
         <title>Contact Us - <?php echo POOL_NAME; ?></title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="contact shivaji pool, swimming coaching contact mumbai, pool location" name="keywords">
-        <meta content="Get in touch with Shivaji Swimming Pool for coaching inquiries, memberships, and feedback." name="description">
+        <meta content="contact shivaji pool, swimming coaching contact shegaon, shegaon pool location" name="keywords">
+        <meta content="Get in touch with Shivaji Swimming Pool Shegaon for coaching inquiries, memberships, and feedback." name="description">
 
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,7 +79,7 @@ require_once 'config/config.php';
                                         </div>
                                         <div>
                                             <h4>Address</h4>
-                                            <p class="mb-0">123 Street New York.USA</p>
+                                            <p class="mb-0">RM2H+798 Rajeshwar Colony, Old Main Rd, behind Gajanan Bakery, Vyankatesh Nagar, Alasana, Shegaon, Maharashtra 444203</p>
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@ require_once 'config/config.php';
                                         </div>
                                         <div>
                                             <h4>Mail Us</h4>
-                                            <p class="mb-0">info@example.com</p>
+                                            <p class="mb-0">info@shivajiswims.com</p>
                                         </div>
                                     </div>
                                 </div>
@@ -101,18 +101,29 @@ require_once 'config/config.php';
                                         </div>
                                         <div>
                                             <h4>Telephone</h4>
-                                            <p class="mb-0">(+012) 3456 7890</p>
+                                            <p class="mb-0">092265 85968</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="contact-add-item rounded bg-light p-4">
                                         <div class="contact-icon text-primary mb-4">
-                                            <i class="fab fa-firefox-browser fa-2x"></i>
+                                            <i class="fab fa-whatsapp fa-2x"></i>
                                         </div>
                                         <div>
-                                            <h4>Yoursite@ex.com</h4>
-                                            <p class="mb-0">(+012) 3456 7890</p>
+                                            <h4>WhatsApp</h4>
+                                            <p class="mb-0">+91 98765 43210</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="contact-add-item rounded bg-light p-4">
+                                        <div class="contact-icon text-primary mb-4">
+                                            <i class="fas fa-clock fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h4>Opening Hours</h4>
+                                            <p class="mb-0">Mon-Sun: 6:00 AM - 9:00 PM</p>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +131,7 @@ require_once 'config/config.php';
                                     <div class="d-flex justify-content-around bg-light rounded p-4">
                                         <a class="btn btn-xl-square btn-primary rounded-circle" href="#"><i class="fab fa-facebook-f"></i></a>
                                         <a class="btn btn-xl-square btn-primary rounded-circle" href="#"><i class="fab fa-twitter"></i></a>
-                                        <a class="btn btn-xl-square btn-primary rounded-circle" href="#"><i class="fab fa-instagram"></i></a>
+                                        <a class="btn btn-xl-square btn-primary rounded-circle" href="https://www.instagram.com/its_shivajis_pool/"><i class="fab fa-instagram"></i></a>
                                         <a class="btn btn-xl-square btn-primary rounded-circle" href="#"><i class="fab fa-linkedin-in"></i></a>
                                     </div>
                                 </div>
@@ -178,8 +189,8 @@ require_once 'config/config.php';
                     </div>
                     <div class="col-12 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="rounded">
-                            <iframe class="rounded w-100" 
-                            style="height: 400px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387191.33750346623!2d-73.97968099999999!3d40.6974881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1694259649153!5m2!1sen!2sbd" 
+                             <iframe class="rounded w-100" 
+                            style="height: 400px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3753.9392!2d76.7829!3d20.7981!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd7a89f2f5f2c97%3A0x8f5f5f5f5f5f5f5f5!2sRM2H%2B798%20Rajeshwar%20Colony%2C%20Shegaon%2C%20Maharashtra%20444203!5e0!3m2!1sen!2sin!4v1708704000000!5m2!1sen!2sin" 
                             loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
