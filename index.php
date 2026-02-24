@@ -516,7 +516,7 @@ require_once 'config/config.php';
 
 
         <!-- Blog Start -->
-        <div class="container-fluid blog pb-5">
+        <!-- <div class="container-fluid blog pb-5">
             <div class="container pb-5">
                 <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
                     <h4 class="text-primary">Our Blog</h4>
@@ -578,7 +578,7 @@ require_once 'config/config.php';
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Blog End -->
 
 

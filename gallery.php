@@ -115,6 +115,11 @@
                                 <a href="img/gallery-6.jpg" class="btn btn-light btn-lg-square rounded-circle" data-lightbox="Gallery-6"><i class="fas fa-search-plus"></i></a>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Gallery End -->
         <?php require_once 'includes/footer.php'; ?>
     </body>
 </html>

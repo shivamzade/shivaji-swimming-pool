@@ -27,14 +27,11 @@
                         <div class="footer-item">
                             <h4 class="text-white mb-4">Quick Links</h4>
                             <a href="about.php"><i class="fas fa-angle-right me-2"></i> About Us</a>
-                            <a href="feature.php"><i class="fas fa-angle-right me-2"></i> Feature</a>
-                            <a href="attraction.php"><i class="fas fa-angle-right me-2"></i> Attractions</a>
-                            <a href="package.php"><i class="fas fa-angle-right me-2"></i> Tickets</a>
-                            <a href="blog.php"><i class="fas fa-angle-right me-2"></i> Blog</a>
+                            <a href="gallery.php"><i class="fas fa-angle-right me-2"></i> Our Gallery</a>
                             <a href="contact.php"><i class="fas fa-angle-right me-2"></i> Contact us</a>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-2">
+                    <!-- <div class="col-md-6 col-lg-6 col-xl-2">
                         <div class="footer-item">
                             <h4 class="text-white mb-4">Support</h4>
                             <a href="#"><i class="fas fa-angle-right me-2"></i> Privacy Policy</a>
@@ -44,7 +41,7 @@
                             <a href="#"><i class="fas fa-angle-right me-2"></i> FAQ</a>
                             <a href="#"><i class="fas fa-angle-right me-2"></i> Help</a>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-6 col-lg-6 col-xl-4">
                         <div class="footer-item">
                             <h4 class="text-white mb-4">Opening Hours</h4>
